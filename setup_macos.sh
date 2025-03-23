@@ -118,6 +118,8 @@ install_dev_apps () {
   "skaffold" "skaffold" OFF \
   "stats" "stats" OFF \
   "tldr" "help pages for command-line tools" OFF \
+  "ansible" "ansible" OFF \
+  "ansible-lint" "ansible-lint" OFF \
   3>&1 1>&2 2>&3)
   if [[ "$brew_dev_apps" ]]; then
     log "Installing additional packages: $brew_dev_apps"
