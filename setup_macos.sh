@@ -138,6 +138,7 @@ install_cask_apps () {
     "calibre" "calibre" OFF \
     "dbeaver-community" "dbeaver-community" OFF \
     "docker" "docker" OFF \
+    "orbStack" "orbStack" OFF \
     "double-commander" "double-commander" OFF \
     "discord" "discord" OFF \
     "fork" "Git client" OFF \
@@ -206,15 +207,6 @@ install_zsh_plugins () {
   fi
 }
 
-install_all() {
-  install_brew
-  install_ohmyzsh
-  install_rosetta
-  install_common_tools
-  install_dev_apps
-  install_cask_apps
-  install_zsh_plugins
-}
 
 # Menu
 while true; do
@@ -227,8 +219,7 @@ while true; do
   echo "5) Install development CLI apps"
   echo "6) Install GUI apps"
   echo "7) Install Zsh plugins"
-  echo "8) Install All"
-  echo "9) Exit"
+  echo "0) Exit"
   read -p "Enter your choice [1-9]: " choice
 
   case "$choice" in
@@ -253,10 +244,8 @@ while true; do
     7)
       install_zsh_plugins
       ;;
-    8)
-      install_all
-      ;;
-    9)
+
+    0)
       log "Exiting..."
       break
       ;;
