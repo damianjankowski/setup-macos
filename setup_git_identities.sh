@@ -21,9 +21,7 @@ main_gitconfig="$HOME/.gitconfig"
 personal_gitconfig="$HOME/.gitconfig-personal"
 work_gitconfig="$HOME/.gitconfig-work"
 
-############
-### MAIN ###
-############
+# ---- MAIN ----
 echo "Creating ~/.gitconfig"
 cat > "$main_gitconfig" <<EOF
 [user]
