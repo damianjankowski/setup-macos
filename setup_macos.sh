@@ -207,6 +207,31 @@ install_zsh_plugins () {
   fi
 }
 
+remap_keyboard() {
+  log "Starting keyboard remapping tool..."
+  
+  if [ -f "./remap_keyboard.sh" ]; then
+    chmod +x ./remap_keyboard.sh
+    ./remap_keyboard.sh
+  else
+    log "Error: remap_keyboard.sh not found in the current directory."
+    log "Please make sure the script is in the same directory as setup_macos.sh"
+  fi
+}
+
+setup_git_identities() {
+  log "Setup git identities..."
+  
+  if [ -f "./setup_git_identities.sh" ]; then
+    chmod +x ./setup_git_identities.sh
+    ./setup_git_identities.sh
+  else
+    log "Error: setup_git_identities.sh not found in the current directory."
+    log "Please make sure the script is in the same directory as setup_macos.sh"
+  fi
+}
+
+
 
 # Menu
 while true; do
@@ -219,8 +244,10 @@ while true; do
   echo "5) Install development CLI apps"
   echo "6) Install GUI apps"
   echo "7) Install Zsh plugins"
+  echo "8) Remap keyboard keys"  
+  echo "9) Setup git identities"  
   echo "0) Exit"
-  read -p "Enter your choice [1-9]: " choice
+  read -p "Enter your choice [0-8]: " choice
 
   case "$choice" in
     1)
@@ -244,7 +271,12 @@ while true; do
     7)
       install_zsh_plugins
       ;;
-
+    8)
+      remap_keyboard  
+      ;;
+    9)
+      setup_git_identities  
+      ;;
     0)
       log "Exiting..."
       break
@@ -254,3 +286,4 @@ while true; do
       ;;
   esac
 done
+
