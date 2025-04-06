@@ -84,7 +84,9 @@ select_device() {
 
 uninstall_service() {
     echo "Uninstalling the service..."
-    launchctl bootout gui/$(id -u) com.local.KeyRemapping 2>/dev/null; rm ~/Library/LaunchAgents/com.local.KeyRemapping.plist; hidutil property --set '{"UserKeyMapping":[]}'
+    launchctl bootout gui/$(id -u) "$LABEL" 2>/dev/null
+    rm "$PLIST_PATH" 2>/dev/null
+    hidutil property --set '{"UserKeyMapping":[]}'
     echo "Service has been uninstalled."
 }
 
@@ -98,21 +100,11 @@ show_menu() {
     read -p "Choose an option: " choice
 
     case $choice in
-        1)
-            create_launch_agent
-            ;;
-        2)
-            uninstall_service
-            ;;
-        3)
-            open "https://hidutil-generator.netlify.app"
-            ;;
-        0)
-            exit 0
-            ;;
-        *)
-            echo "Invalid option"
-            ;;
+        1) create_launch_agent ;;
+        2) uninstall_service ;;
+        3) open "https://hidutil-generator.netlify.app" ;;
+        0) exit 0 ;;
+        *) echo "Invalid option" ;;
     esac
     
     if [[ "$choice" != "0" ]]; then

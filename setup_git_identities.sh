@@ -21,7 +21,7 @@ main_gitconfig="$HOME/.gitconfig"
 personal_gitconfig="$HOME/.gitconfig-personal"
 work_gitconfig="$HOME/.gitconfig-work"
 
-# ---- MAIN ----
+# Create main gitconfig
 echo "Creating ~/.gitconfig"
 cat > "$main_gitconfig" <<EOF
 [user]
@@ -38,6 +38,7 @@ cat > "$main_gitconfig" <<EOF
     path = $work_gitconfig
 EOF
 
+# Create personal gitconfig
 echo "Creating ~/.gitconfig-personal"
 cat > "$personal_gitconfig" <<EOF
 [user]
@@ -48,6 +49,7 @@ cat > "$personal_gitconfig" <<EOF
     helper = osxkeychain
 EOF
 
+# Create work gitconfig
 echo "Creating ~/.gitconfig-work"
 cat > "$work_gitconfig" <<EOF
 [user]

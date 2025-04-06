@@ -83,26 +83,22 @@ install_common_tools () {
 install_dev_apps () {
   check_brew_installed
   brew_dev_apps=$(dialog --title "Choose non GUI apps you'd like to install" \
-   --checklist "Use SPACE to select/deselect options. Confirm your choice by clicking ENTER." 20 60 4 \
-  # Cloud 
+   --checklist "Use SPACE to select/deselect options. Confirm your choice by clicking ENTER." 20 80 6 \
   "awscli" "AWS CLI" OFF \
   "azure-cli" "Azure CLI" OFF \
   "granted" "Cloud role access manager" OFF \
   "aws-vpn-client" "AWS VPN Client" OFF \
-  # k8s 
   "kubernetes-cli" "Kubernetes CLI" OFF \
   "helm" "Helm" OFF \
   "k9s" "k9s" OFF \
   "minicube" "Minicube" OFF \
   "skaffold" "Skaffold" OFF \
   "argocd" "ArgoCD" OFF \
-  # Infra 
   "terraform" "Terraform" OFF \
   "tfenv" "Terraform version manager" OFF \
   "tflint" "Terraform linter" OFF \
   "ansible" "Ansible" OFF \
   "ansible-lint" "Linter for Ansible" OFF \
-  # Dev 
   "act" "Run GitHub Actions locally" OFF \
   "glab" "GitLab CLI tool" OFF \
   "nvm" "Node Version Manager" OFF \
@@ -110,7 +106,6 @@ install_dev_apps () {
   "pyenv-virtualenv" "Pyenv plugin for virtualenv" OFF \
   "pipx" "pipx" OFF \
   "neovim" "Vim-based text editor" OFF \
-  # Terminal utils
   "fzf" "Command-line fuzzy finder" OFF \
   "htop" "htop" OFF \
   "jq" "JSON processor" OFF \
@@ -139,7 +134,6 @@ install_cask_apps () {
   check_brew_installed
   brew_cask_apps=$(dialog --title "Choose GUI apps you'd like to install" \
   --checklist "Use SPACE to select/deselect options. Confirm your choice by clicking ENTER." 20 80 6 \
-    # Dev 
     "visual-studio-code" "VSCode" OFF \
     "sublime-text" "Sublime" OFF \
     "pycharm" "Python IDE" OFF \
@@ -149,26 +143,20 @@ install_cask_apps () {
     "docker" "Docker" OFF \
     "orbStack" "orbStack" OFF \
     "lens" "Kubernetes IDE" OFF \
-    # GIT
     "fork" "Git client" OFF \
     "sourcetree" "Git client" OFF \
-    # Terminal 
     "iterm2" "Terminal" OFF \
     "warp" "Terminal" OFF \
-    # System utils
     "rectangle-pro" "Window manager" OFF \
     "hiddenbar" "Menu bar manager" OFF \
     "karabiner-elements" "Keyboard customizer" OFF \
     "lunar" "Monitor brightness control" OFF \
     "raycast" "Productivity launcher" OFF \
     "stretchly" "Break reminder" OFF \
-    # Communicators
     "slack" "Team communication" OFF \
     "discord" "Voice and text chat" OFF \
-    # Media 
     "spotify" "Music streaming" OFF \
     "calibre" "E-book manager" OFF \
-    # Miscellaneous
     "aws-vpn-client" "AWS VPN Client" OFF \
     "garmin-express" "Garmin device manager" OFF \
     "obsidian" "Knowledge base" OFF \
@@ -259,43 +247,20 @@ while true; do
   echo "8) Remap keyboard keys"  
   echo "9) Setup git identities"  
   echo "0) Exit"
-  read -p "Enter your choice [0-8]: " choice
+  read -p "Enter your choice [0-9]: " choice
 
   case "$choice" in
-    1)
-      install_brew
-      ;;
-    2)
-      install_ohmyzsh
-      ;;
-    3)
-      install_rosetta
-      ;;
-    4)
-      install_common_tools
-      ;;
-    5)
-      install_dev_apps
-      ;;
-    6)
-      install_cask_apps
-      ;;
-    7)
-      install_zsh_plugins
-      ;;
-    8)
-      remap_keyboard  
-      ;;
-    9)
-      setup_git_identities  
-      ;;
-    0)
-      log "Exiting..."
-      break
-      ;;
-    *)
-      log "Invalid choice! Please select a valid option."
-      ;;
+    1) install_brew ;;
+    2) install_ohmyzsh ;;
+    3) install_rosetta ;;
+    4) install_common_tools ;;
+    5) install_dev_apps ;;
+    6) install_cask_apps ;;
+    7) install_zsh_plugins ;;
+    8) remap_keyboard ;;
+    9) setup_git_identities ;;
+    0) log "Exiting..."; break ;;
+    *) log "Invalid choice! Please select a valid option." ;;
   esac
 done
 
