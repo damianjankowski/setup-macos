@@ -84,42 +84,47 @@ install_dev_apps () {
   check_brew_installed
   brew_dev_apps=$(dialog --title "Choose non GUI apps you'd like to install" \
    --checklist "Use SPACE to select/deselect options. Confirm your choice by clicking ENTER." 20 60 4 \
-  "act" "Run your GitHub Actions locally" OFF \
-  "aws-vpn-client" "aws-vpn-client" OFF \
-  "awscli" "awscli" OFF \
-  "argocd" "argocd" OFF \
-  "azure-cli" "azure-cli" OFF \
-  "ctop" "Top-like interface for container metrics" OFF \
-  "fzf" "It's an interactive filter program" OFF \
-  "glab" "git lab cli" OFF \
-  "granted" "Finding and accessing cloud roles to multiple cloud accounts" OFF \
-  "helm" "helm" OFF \
-  "htop" "htop" OFF \
-  "Jq" "Jq" OFF \
+  # Cloud 
+  "awscli" "AWS CLI" OFF \
+  "azure-cli" "Azure CLI" OFF \
+  "granted" "Cloud role access manager" OFF \
+  "aws-vpn-client" "AWS VPN Client" OFF \
+  # k8s 
+  "kubernetes-cli" "Kubernetes CLI" OFF \
+  "helm" "Helm" OFF \
   "k9s" "k9s" OFF \
-  "kcat" "kcat - Apache Kafka producer and consumer tool" OFF \
-  "kubernetes-cli" "kubernetes-cli" OFF \
-  "nvm" "nvm" OFF \
+  "minicube" "Minicube" OFF \
+  "skaffold" "Skaffold" OFF \
+  "argocd" "ArgoCD" OFF \
+  # Infra 
+  "terraform" "Terraform" OFF \
+  "tfenv" "Terraform version manager" OFF \
+  "tflint" "Terraform linter" OFF \
+  "ansible" "Ansible" OFF \
+  "ansible-lint" "Linter for Ansible" OFF \
+  # Dev 
+  "act" "Run GitHub Actions locally" OFF \
+  "glab" "GitLab CLI tool" OFF \
+  "nvm" "Node Version Manager" OFF \
+  "pyenv" "Python version manager" OFF \
+  "pyenv-virtualenv" "Pyenv plugin for virtualenv" OFF \
   "pipx" "pipx" OFF \
-  "pyenv" "pyenv" OFF \
-  "pyenv-virtualenv" "pyenv-virtualenv" OFF \
-  "tflint" "tflint" OFF \
-  "tfenv" "tfenv" OFF \
-  "terraform" "terraform" OFF \
-  "thefuck" "thefuck" OFF \
+  "neovim" "Vim-based text editor" OFF \
+  # Terminal utils
+  "fzf" "Command-line fuzzy finder" OFF \
+  "htop" "htop" OFF \
+  "jq" "JSON processor" OFF \
+  "yq" "YAML processor" OFF \
   "tmux" "tmux" OFF \
   "tree" "tree" OFF \
   "watch" "watch" OFF \
-  "wakeonlan" "wakeonlan" OFF \
   "wget" "wget" OFF \
-  "Yq" "Yq" OFF \
-  "neovim" "neovim" OFF \
-  "minicube" "minicube" OFF \
-  "skaffold" "skaffold" OFF \
-  "stats" "stats" OFF \
-  "tldr" "help pages for command-line tools" OFF \
-  "ansible" "ansible" OFF \
-  "ansible-lint" "ansible-lint" OFF \
+  "thefuck" "Command correction tool" OFF \
+  "tldr" "Simplified command documentation" OFF \
+  "ctop" "Container metrics viewer" OFF \
+  "kcat" "Kafka CLI tool" OFF \
+  "wakeonlan" "Wake-on-LAN" OFF \
+  "stats" "System resource monitor" OFF \
   3>&1 1>&2 2>&3)
   if [[ "$brew_dev_apps" ]]; then
     log "Installing additional packages: $brew_dev_apps"
@@ -134,33 +139,40 @@ install_cask_apps () {
   check_brew_installed
   brew_cask_apps=$(dialog --title "Choose GUI apps you'd like to install" \
   --checklist "Use SPACE to select/deselect options. Confirm your choice by clicking ENTER." 20 80 6 \
-    "aws-vpn-client" "aws-vpn-client" OFF \
-    "calibre" "calibre" OFF \
-    "dbeaver-community" "dbeaver-community" OFF \
-    "docker" "docker" OFF \
+    # Dev 
+    "visual-studio-code" "VSCode" OFF \
+    "sublime-text" "Sublime" OFF \
+    "pycharm" "Python IDE" OFF \
+    "pycharm-ce" "Python IDE (Community Edition)" OFF \
+    "dbeaver-community" "Database tool" OFF \
+    "postman" "Postman" OFF \
+    "docker" "Docker" OFF \
     "orbStack" "orbStack" OFF \
-    "double-commander" "double-commander" OFF \
-    "discord" "discord" OFF \
-    "fork" "Git client" OFF \
-    "garmin-express" "garmin-express" OFF \
-    "hiddenbar" "hiddenbar" OFF \
-    "karabiner-elements" "keyboard customizer" OFF \
     "lens" "Kubernetes IDE" OFF \
+    # GIT
+    "fork" "Git client" OFF \
+    "sourcetree" "Git client" OFF \
+    # Terminal 
+    "iterm2" "Terminal" OFF \
+    "warp" "Terminal" OFF \
+    # System utils
+    "rectangle-pro" "Window manager" OFF \
+    "hiddenbar" "Menu bar manager" OFF \
+    "karabiner-elements" "Keyboard customizer" OFF \
     "lunar" "Monitor brightness control" OFF \
-    "obsidian" "Note-taking app" OFF \
-    "postman" "postman" OFF \
-    "pycharm" "pycharm" OFF \
-    "pycharm-ce" "pycharm community" OFF \
-    "raycast" "productivity launcher" OFF \
-    "rectangle-pro" "rectangle pro" OFF \
-    "slack" "slack" OFF \
-    "sourcetree" "sourcetree" OFF \
-    "spotify" "spotify" OFF \
-    "sublime-text" "sublime-text" OFF \
-    "visual-studio-code" "visual-studio-code" OFF \
-    "warp" "warp" OFF \
-    "stretchly" "break reminder" OFF \
-    "iterm2" "iterm2" OFF \
+    "raycast" "Productivity launcher" OFF \
+    "stretchly" "Break reminder" OFF \
+    # Communicators
+    "slack" "Team communication" OFF \
+    "discord" "Voice and text chat" OFF \
+    # Media 
+    "spotify" "Music streaming" OFF \
+    "calibre" "E-book manager" OFF \
+    # Miscellaneous
+    "aws-vpn-client" "AWS VPN Client" OFF \
+    "garmin-express" "Garmin device manager" OFF \
+    "obsidian" "Knowledge base" OFF \
+    "double-commander" "File manager" OFF \
     3>&1 1>&2 2>&3)
 
   if [[ "$brew_cask_apps" ]]; then
