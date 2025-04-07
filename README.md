@@ -19,9 +19,17 @@
 
 ## Installation
 
-1. Clone the repository:
+1. Version with `git` already installed:
    ```bash
    git clone https://github.com/yourusername/setup_macos.git
    cd setup_macos
+   chmod +x setup_macos.sh 
+   ./setup_macos.sh 
+   
+2. Without `git` installed:
+   ```bash
+   curl -L -o main.zip https://codeload.github.com/damianjankowski/setup-macos/zip/refs/heads/main
+   unzip main.zip
+   cd setup-macos-main
    chmod +x setup_macos.sh 
    ./setup_macos.sh 
