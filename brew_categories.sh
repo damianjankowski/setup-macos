@@ -90,6 +90,7 @@ SYS_UTILS=(
   "hiddenbar" "gui"
   "karabiner-elements" "gui"
   "lunar" "gui"
+  "betterdisplay" "gui"
   "raycast" "gui"
   "stretchly" "gui"
   "double-commander" "gui"
