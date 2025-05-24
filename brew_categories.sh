@@ -20,6 +20,7 @@ CATEGORIES=(
 # Define package lists for each category
 CLOUD_TOOLS=(
   "awscli" "cli"
+  "google-cloud-sdk" "cli"
   "azure-cli" "cli"
   "granted" "cli"
   "kubernetes-cli" "cli"
@@ -112,36 +113,6 @@ ZSH_PLUGINS=(
 COMMON_TOOLS=(
   "git" "cli"
   "dialog" "cli"
-)
-
-# Define GUI applications
-GUI_APPS=(
-  "aws-vpn-client"
-  "lens"
-  "visual-studio-code"
-  "sublime-text"
-  "pycharm"
-  "pycharm-ce"
-  "postman"
-  "fork"
-  "sourcetree"
-  "dbeaver-community"
-  "docker"
-  "orbStack"
-  "iterm2"
-  "warp"
-  "rectangle-pro"
-  "hiddenbar"
-  "karabiner-elements"
-  "lunar"
-  "raycast"
-  "stretchly"
-  "double-commander"
-  "slack"
-  "discord"
-  "spotify"
-  "calibre"
-  "obsidian"
 )
 
 CATEGORY_VARS=(
