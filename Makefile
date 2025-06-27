@@ -15,5 +15,5 @@ help:  ## Show this help message
 
 .PHONY: run
 run:  ## Run script
-	chmod +x setup_macos.sh
-	./setup_macos.sh
+	chmod +x setup.sh
+	./setup.sh
