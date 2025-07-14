@@ -120,6 +120,7 @@ show_system_menu() {
         echo "2) Install Rosetta 2 (Apple Silicon)"
         echo "3) Configure Finder Settings"
         echo "4) Keyboard Remapping"
+        echo "5) Configure 1Password SSH Agent"
         echo "0) Back to main menu"
         
         local choice=$(get_input "Enter your choice" "0")
@@ -129,6 +130,7 @@ show_system_menu() {
             "2") install_rosetta ;;
             "3") configure_finder_settings ;;
             "4") remap_keyboard ;;
+            "5") configure_1password_ssh ;;
             "0") break ;;
             *) log_error "Invalid choice: $choice" ;;
         esac
@@ -194,4 +196,54 @@ remap_keyboard() {
             echo ""
         fi
     fi
+} 
+
+# =============================================================================
+# 1Password SSH Agent Configuration
+# =============================================================================
+
+configure_1password_ssh() {
+    local ssh_dir="$HOME/.ssh"
+    local ssh_config="$ssh_dir/config"
+    local agent_line='  IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"'
+    local host_line='Host *'
+
+    if [[ ! -d "$ssh_dir" ]]; then
+        mkdir -p "$ssh_dir"
+        chmod 700 "$ssh_dir"
+        log_info "Created $ssh_dir directory."
+    fi
+
+    if [[ -f "$ssh_config" ]]; then
+        backup_file "$ssh_config"
+    fi
+
+    if [[ ! -f "$ssh_config" ]]; then
+        echo -e "$host_line\n$agent_line" > "$ssh_config"
+        chmod 600 "$ssh_config"
+        log_success "Created $ssh_config with 1Password SSH agent configuration."
+        return 0
+    fi
+
+    if grep -q 'IdentityAgent.*1password' "$ssh_config"; then
+        log_success "1Password SSH agent is already configured in $ssh_config."
+        return 0
+    fi
+
+    if grep -q "^Host \*" "$ssh_config"; then
+        awk -v agent_line="$agent_line" '
+            $0 ~ /^Host \*/ {print; found=1; next}
+            found && $0 ~ /^  IdentityAgent/ {next}
+            {print}
+            END {if (!found) print "Host *\n" agent_line}
+        ' "$ssh_config" > "$ssh_config.tmp" && mv "$ssh_config.tmp" "$ssh_config"
+        if ! awk '/^Host \*/{f=1} f && /IdentityAgent.*1password/{found=1; exit} END{exit !found}' "$ssh_config"; then
+            awk '/^Host \*/{print; print "  IdentityAgent \"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock\""; next} {print}' "$ssh_config" > "$ssh_config.tmp" && mv "$ssh_config.tmp" "$ssh_config"
+        fi
+        log_success "Updated $ssh_config with 1Password SSH agent configuration."
+    else
+        echo -e "\n$host_line\n$agent_line" >> "$ssh_config"
+        log_success "Appended 1Password SSH agent configuration to $ssh_config."
+    fi
+    chmod 600 "$ssh_config"
 } 
