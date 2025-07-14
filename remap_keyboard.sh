@@ -1,13 +1,15 @@
 #!/bin/bash
 
+# Keyboard remapping tool for macOS
+
 PLIST_PATH=~/Library/LaunchAgents/com.local.KeyRemapping.plist
 LABEL=com.local.KeyRemapping
 
 create_launch_agent() {
     select_device
     
-    if [ -z "$vendor_id" ] || [ -z "$product_id" ]; then
-        echo "Missing required device identifiers. Aborting."
+    if [[ -z "$vendor_id" || -z "$product_id" ]]; then
+        echo "Missing device identifiers. Aborting."
         return 1
     fi
     
@@ -46,58 +48,53 @@ EOF
 
     chmod 644 "$PLIST_PATH"
     
-    echo "Plist file has been created: $PLIST_PATH"
+    echo "Created plist: $PLIST_PATH"
+    echo "Loading service..."
     
-    echo "Loading the service..."
     launchctl bootout gui/$(id -u) "$LABEL" 2>/dev/null || true
     launchctl bootstrap gui/$(id -u) "$PLIST_PATH"
     launchctl enable gui/$(id -u)/"$LABEL"
     
-    echo "Service has been loaded. Key mapping should be active."
+    echo "Key mapping active."
 }
 
 select_device() {
-    echo "Detecting connected HID devices..."
+    echo "Detecting HID devices..."
     hidutil list
     
-    echo ""
-    echo "Enter the name of your keyboard (e.g., 'MX Keys'):"
-    read keyboard_name
-
-    if [ -z "$keyboard_name" ]; then
-        keyboard_name="MX Keys"
-        echo "Using default keyboard: $keyboard_name"
-    fi
+    echo
+    read -p "Enter keyboard name (e.g., 'MX Keys'): " keyboard_name
+    keyboard_name="${keyboard_name:-MX Keys}"
     
     vendor_id=$(hidutil list | grep -i "$keyboard_name" | head -1 | awk '{print $1}')
     product_id=$(hidutil list | grep -i "$keyboard_name" | head -1 | awk '{print $2}')
     
-    if [ -z "$vendor_id" ] || [ -z "$product_id" ]; then
-        echo "Device not found with name: $keyboard_name"
-        echo "Enter identifiers manually:"
+    if [[ -z "$vendor_id" || -z "$product_id" ]]; then
+        echo "Device not found: $keyboard_name"
         read -p "VendorID (e.g., 0x046d): " vendor_id
         read -p "ProductID (e.g., 0xb35b): " product_id
     else
-        echo "Selected device: $keyboard_name with VendorID: $vendor_id, ProductID: $product_id"
+        echo "Selected: $keyboard_name (VendorID: $vendor_id, ProductID: $product_id)"
     fi
 }
 
 uninstall_service() {
-    echo "Uninstalling the service..."
+    echo "Uninstalling service..."
     launchctl bootout gui/$(id -u) "$LABEL" 2>/dev/null
     rm "$PLIST_PATH" 2>/dev/null
     hidutil property --set '{"UserKeyMapping":[]}'
-    echo "Service has been uninstalled."
+    echo "Service uninstalled."
 }
 
 show_menu() {
-    echo ""
+    echo
     echo "Key Mapping Tool (macOS)"
     echo "1. Create and load configuration"
     echo "2. Uninstall service"
     echo "3. Open mapping generator"
     echo "0. Exit"
-    read -p "Choose an option: " choice
+    
+    read -p "Choose option: " choice
 
     case $choice in
         1) create_launch_agent ;;
@@ -107,10 +104,7 @@ show_menu() {
         *) echo "Invalid option" ;;
     esac
     
-    if [[ "$choice" != "0" ]]; then
-        read -p "Press Enter to continue..."
-        show_menu
-    fi
+    [[ "$choice" != "0" ]] && { read -p "Press Enter to continue..."; show_menu; }
 }
 
 show_menu

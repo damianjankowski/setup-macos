@@ -1,83 +1,66 @@
 #!/bin/bash
 
-# =============================================================================
-# Git Configuration Module
-# Simple Git setup with work/personal identities (simplified version)
-# =============================================================================
+# Git configuration module
 
-# Git configuration files
-readonly MAIN_GITCONFIG="$HOME/.gitconfig"
-readonly PERSONAL_GITCONFIG="$HOME/.gitconfig-personal"
-readonly WORK_GITCONFIG="$HOME/.gitconfig-work"
+readonly GITCONFIG="$HOME/.gitconfig"
+readonly PERSONAL_CONFIG="$HOME/.gitconfig-personal"
+readonly WORK_CONFIG="$HOME/.gitconfig-work"
 readonly FZF_GIT_DIR="$HOME/fzf-git.sh"
 
-# =============================================================================
-# Simple Git Setup Functions
-# =============================================================================
-
-# Install fzf-git.sh - fuzzy finder for git
+# Install fzf-git.sh
 install_fzf_git() {
     log_info "Installing fzf-git.sh..."
     
-    # Check if git is available
     if ! command_exists git; then
-        log_error "Git is required to clone fzf-git.sh repository"
+        log_error "Git required"
         return 1
     fi
     
-    # Remove existing directory if it exists
     if [[ -d "$FZF_GIT_DIR" ]]; then
-        log_info "Existing fzf-git.sh directory found. Updating..."
+        log_info "Updating existing installation..."
         cd "$FZF_GIT_DIR" && git pull origin main 2>/dev/null || {
-            log_warn "Failed to update existing repository. Removing and re-cloning..."
+            log_warn "Update failed, re-cloning..."
             rm -rf "$FZF_GIT_DIR"
         }
     fi
     
-    # Clone the repository if it doesn't exist or was removed
     if [[ ! -d "$FZF_GIT_DIR" ]]; then
-        log_info "Cloning fzf-git.sh repository to $FZF_GIT_DIR..."
         git clone https://github.com/junegunn/fzf-git.sh.git "$FZF_GIT_DIR" || {
-            log_error "Failed to clone fzf-git.sh repository"
+            log_error "Failed to clone fzf-git.sh"
             return 1
         }
     fi
     
-    log_success "fzf-git.sh installed successfully at $FZF_GIT_DIR"
+    log_success "fzf-git.sh installed at $FZF_GIT_DIR"
 }
 
-# Setup Git identities using .env file (like legacy version)
+# Setup Git identities using .env
 setup_git_identities() {
     log_info "Setting up Git identities..."
     
-    # Load environment variables if available
-    if [[ -f ".env" ]]; then
-        log_info "Loading .env variables..."
-        load_env || {
-            log_error ".env file found but failed to load"
-            return 1
-        }
-    else
-        log_error ".env file not found. Please create one with PERSONAL_NAME, PERSONAL_EMAIL, WORK_NAME, WORK_EMAIL"
+    if [[ ! -f ".env" ]]; then
+        log_error ".env file not found"
+        log_info "Required variables: PERSONAL_NAME, PERSONAL_EMAIL, WORK_NAME, WORK_EMAIL"
         return 1
     fi
     
-    # Check for required variables
+    load_env || {
+        log_error "Failed to load .env"
+        return 1
+    }
+    
     if [[ -z "${PERSONAL_NAME:-}" || -z "${PERSONAL_EMAIL:-}" || -z "${WORK_NAME:-}" || -z "${WORK_EMAIL:-}" ]]; then
-        log_error "Missing required environment variables in .env file"
+        log_error "Missing required environment variables"
         log_info "Required: PERSONAL_NAME, PERSONAL_EMAIL, WORK_NAME, WORK_EMAIL"
         return 1
     fi
-
     
-    # Backup existing configuration
-    if [[ -f "$MAIN_GITCONFIG" ]]; then
-        backup_file "$MAIN_GITCONFIG"
-    fi
+    # Backup existing config
+    [[ -f "$GITCONFIG" ]] && backup_file "$GITCONFIG"
     
     # Create main gitconfig (work as default)
     log_info "Creating ~/.gitconfig"
-    cat > "$MAIN_GITCONFIG" <<EOF
+    cat > "$GITCONFIG" <<EOF
 [user]
     name = $WORK_NAME
     email = $WORK_EMAIL
@@ -102,15 +85,15 @@ setup_git_identities() {
     ui = auto
 
 [includeIf "gitdir:~/src/"]
-    path = $PERSONAL_GITCONFIG
+    path = $PERSONAL_CONFIG
 
 [includeIf "gitdir:~/repo/"]
-    path = $WORK_GITCONFIG
+    path = $WORK_CONFIG
 EOF
 
-    # Create personal gitconfig
+    # Create personal config
     log_info "Creating ~/.gitconfig-personal"
-    cat > "$PERSONAL_GITCONFIG" <<EOF
+    cat > "$PERSONAL_CONFIG" <<EOF
 [user]
     name = $PERSONAL_NAME
     email = $PERSONAL_EMAIL
@@ -119,9 +102,9 @@ EOF
     helper = osxkeychain
 EOF
 
-    # Create work gitconfig
+    # Create work config
     log_info "Creating ~/.gitconfig-work"
-    cat > "$WORK_GITCONFIG" <<EOF
+    cat > "$WORK_CONFIG" <<EOF
 [user]
     name = $WORK_NAME
     email = $WORK_EMAIL
@@ -130,50 +113,46 @@ EOF
     helper = osxkeychain
 EOF
 
-    # Create directories if they don't exist
+    # Create directories
     mkdir -p ~/src ~/repo
     
-    log_success "Git identities configured successfully!"
-    echo
-    echo "Git identity mapping:"
-    echo "Work repos → ~/repo/  (uses $WORK_EMAIL)"
-    echo "Personal repos → ~/src/  (uses $PERSONAL_EMAIL)"
+    log_success "Git identities configured!"
+    echo "Work repos → ~/repo/ (uses $WORK_EMAIL)"
+    echo "Personal repos → ~/src/ (uses $PERSONAL_EMAIL)"
 }
 
-# Basic Git setup (install if needed)
+# Setup Git (install if needed)
 setup_git() {
     log_info "Setting up Git..."
     
-    # Check if Git is installed
     if ! command_exists git; then
-        log_info "Git not found. Installing via Homebrew..."
+        log_info "Installing Git via Homebrew..."
         if is_brew_installed; then
             brew install git || {
                 log_error "Failed to install Git"
                 return 1
             }
         else
-            log_error "Homebrew is required to install Git"
+            log_error "Homebrew required to install Git"
             return 1
         fi
     fi
     
-    log_success "Git is available: $(git --version)"
+    log_success "Git available: $(git --version)"
 }
 
-# Show current Git configuration
+# Show Git status
 show_git_status() {
-    echo "Git Status:"
-    echo "==========="
+    echo "Git Status"
+    echo "=========="
     
     if ! command_exists git; then
-        echo "❌ Git is not installed"
+        echo "❌ Git not installed"
         return 1
     fi
     
     echo "✅ Git version: $(git --version)"
     
-    # Show current configuration
     local current_name=$(git config user.name 2>/dev/null)
     local current_email=$(git config user.email 2>/dev/null)
     
@@ -183,103 +162,86 @@ show_git_status() {
         echo "❌ Git identity not configured"
     fi
     
-    # Check configuration files
     echo
     echo "Configuration files:"
-    [[ -f "$MAIN_GITCONFIG" ]] && echo "  ✅ $MAIN_GITCONFIG" || echo "  ❌ $MAIN_GITCONFIG"
-    [[ -f "$PERSONAL_GITCONFIG" ]] && echo "  ✅ $PERSONAL_GITCONFIG" || echo "  ❌ $PERSONAL_GITCONFIG"
-    [[ -f "$WORK_GITCONFIG" ]] && echo "  ✅ $WORK_GITCONFIG" || echo "  ❌ $WORK_GITCONFIG"
+    [[ -f "$GITCONFIG" ]] && echo "  ✅ ~/.gitconfig" || echo "  ❌ ~/.gitconfig"
+    [[ -f "$PERSONAL_CONFIG" ]] && echo "  ✅ ~/.gitconfig-personal" || echo "  ❌ ~/.gitconfig-personal"
+    [[ -f "$WORK_CONFIG" ]] && echo "  ✅ ~/.gitconfig-work" || echo "  ❌ ~/.gitconfig-work"
 }
 
-# Configure git-delta in ~/.gitconfig
+# Configure git-delta
 configure_git_delta() {
     if ! command_exists delta; then
-        log_error "git-delta (delta) is not installed. Please install it first."
+        log_error "git-delta not installed. Install it first."
         return 1
     fi
 
-    local gitconfig="$HOME/.gitconfig"
-    backup_file "$gitconfig"
+    backup_file "$GITCONFIG"
 
-    # Add core.pager and interactive.diffFilter if not present
-    if ! grep -q '^\s*pager\s*=\s*delta' "$gitconfig"; then
+    # Configure delta
+    if ! grep -q '^\s*pager\s*=\s*delta' "$GITCONFIG"; then
         git config --global core.pager delta
-        log_info "Set core.pager to delta in ~/.gitconfig"
+        log_info "Set core.pager to delta"
     fi
-    if ! grep -q '^\s*diffFilter\s*=\s*delta --color-only' "$gitconfig"; then
+    
+    if ! grep -q '^\s*diffFilter\s*=\s*delta --color-only' "$GITCONFIG"; then
         git config --global interactive.diffFilter 'delta --color-only'
-        log_info "Set interactive.diffFilter to 'delta --color-only' in ~/.gitconfig"
+        log_info "Set interactive.diffFilter"
     fi
 
-    # Add [delta] section with recommended options if not present
-    if ! grep -q '^\[delta\]' "$gitconfig"; then
-        cat >> "$gitconfig" <<EOF
+    # Add delta section if missing
+    if ! grep -q '^\[delta\]' "$GITCONFIG"; then
+        cat >> "$GITCONFIG" <<EOF
 
 [delta]
     navigate = true
     side-by-side = true
 EOF
-        log_info "Added [delta] section to ~/.gitconfig"
+        log_info "Added [delta] section"
     else
-        # Ensure options are present
         git config --global delta.navigate true
         git config --global delta.side-by-side true
     fi
 
-    log_success "git-delta configuration applied to ~/.gitconfig!"
+    log_success "git-delta configured!"
 }
 
-# Simple Git menu
+# Git menu
 show_git_menu() {
     while true; do
         echo
         log_info "Git Setup"
-        echo "========="
         
-        # Show current status
         if command_exists git; then
-            echo "✅ Git is installed: $(git --version)"
+            echo "✅ Git installed: $(git --version)"
             local current_name=$(git config user.name 2>/dev/null)
-            if [[ -n "$current_name" ]]; then
-                echo "✅ Git is configured for: $current_name"
-            else
-                echo "⚠️  Git identity not configured"
-            fi
+            [[ -n "$current_name" ]] && echo "✅ Configured for: $current_name" || echo "⚠️  Not configured"
         else
-            echo "❌ Git is not installed"
+            echo "❌ Git not installed"
         fi
         
-        # Check fzf-git.sh status
-        if [[ -d "$FZF_GIT_DIR" ]]; then
-            echo "✅ fzf-git.sh is installed at $FZF_GIT_DIR"
-        else
-            echo "❌ fzf-git.sh is not installed"
-        fi
+        [[ -d "$FZF_GIT_DIR" ]] && echo "✅ fzf-git.sh installed" || echo "❌ fzf-git.sh not installed"
         
         echo
         echo "1) Install/Setup Git"
         echo "2) Setup Git identities"
-        echo "3) Install fzf-git.sh (fuzzy finder for git)"
+        echo "3) Install fzf-git.sh"
         echo "4) Show Git status"
-        echo "5) Configure git-delta (diff viewer)"
-        echo "0) Back to main menu"
+        echo "5) Configure git-delta"
+        echo "0) Back"
         
-        local choice=$(get_input "Enter your choice" "0")
+        read -p "Choice [0-5]: " choice
         
         case "$choice" in
-            "1") setup_git ;;
-            "2") setup_git_identities ;;
-            "3") install_fzf_git ;;
-            "4") show_git_status ;;
-            "5") configure_git_delta ;;
-            "0") break ;;
-            *) log_error "Invalid choice: $choice" ;;
+            1) setup_git ;;
+            2) setup_git_identities ;;
+            3) install_fzf_git ;;
+            4) show_git_status ;;
+            5) configure_git_delta ;;
+            0) break ;;
+            *) log_error "Invalid choice" ;;
         esac
         
-        # Pause for user to read output
-        if [[ "$choice" != "0" ]]; then
-            echo
-            read -p "Press Enter to continue..." -r
-        fi
+        [[ "$choice" != "0" ]] && { echo; read -p "Press Enter to continue..."; }
     done
 } 

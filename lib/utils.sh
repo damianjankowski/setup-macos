@@ -1,99 +1,32 @@
 #!/bin/bash
 
-# =============================================================================
-# Utilities Library
-# Common functions, logging, and error handling for macOS setup scripts
-# =============================================================================
+# Utilities for macOS setup
+VERSION="2.0.0"
 
-# Version and metadata
-SCRIPT_VERSION="2.0.0"
-SCRIPT_NAME="macOS Setup Utilities"
-
-# Colors and formatting
+# Colors
 readonly RED='\033[0;31m'
 readonly GREEN='\033[0;32m'
 readonly YELLOW='\033[1;33m'
 readonly BLUE='\033[0;34m'
-readonly NC='\033[0m' # No Color
+readonly NC='\033[0m'
 
-# =============================================================================
-# Logging Functions
-# =============================================================================
+# Logging functions
+log_success() { echo -e "${GREEN}✅ $1${NC}"; }
+log_info() { echo -e "${BLUE}ℹ️  $1${NC}"; }
+log_warn() { echo -e "${YELLOW}⚠️  $1${NC}"; }
+log_error() { echo -e "${RED}❌ $1${NC}" >&2; }
+log_debug() { [[ "${DEBUG:-0}" == "1" ]] && echo -e "${YELLOW}🐛 $1${NC}" || true; }
 
-# Success message
-log_success() {
-    local message="$1"
-    echo -e "${GREEN}✅ ${message}${NC}"
-}
-
-# Info message
-log_info() {
-    local message="$1"
-    echo -e "${BLUE}ℹ️  ${message}${NC}"
-}
-
-# Warning message
-log_warn() {
-    local message="$1"
-    echo -e "${YELLOW}⚠️  ${message}${NC}"
-}
-
-# Error message
-log_error() {
-    local message="$1"
-    echo -e "${RED}❌ ${message}${NC}" >&2
-}
-
-# Debug message (only shown if DEBUG=1)
-log_debug() {
-    local message="$1"
-    if [[ "${DEBUG:-0}" == "1" ]]; then
-        echo -e "${PURPLE}🐛 ${message}${NC}"
-    fi
-}
-
-# Fancy colored message (backward compatibility)
-log() {
-    log_info "$1"
-}
-
-# =============================================================================
-# Error Handling
-# =============================================================================
-
-# =============================================================================
-# Validation Functions
-# =============================================================================
-
-# Check if running on macOS
+# System checks
 check_macos() {
-    if [[ "$(uname)" != "Darwin" ]]; then
-        log_error "This script only works on macOS"
-        exit 1
-    fi
+    [[ "$(uname)" == "Darwin" ]] || { log_error "macOS only"; exit 1; }
 }
 
-# Check if command exists
-command_exists() {
-    command -v "$1" >/dev/null 2>&1
-}
+command_exists() { command -v "$1" >/dev/null 2>&1; }
 
-# Validate URL
-validate_url() {
-    local url="$1"
-    if [[ ! "$url" =~ ^https?:// ]]; then
-        return 1
-    fi
-    return 0
-}
+validate_url() { [[ "$1" =~ ^https?:// ]]; }
 
-
-
-# =============================================================================
-# User Interaction
-# =============================================================================
-
-# Ask user for confirmation
+# User interaction
 confirm() {
     local prompt="${1:-Are you sure?}"
     local default="${2:-n}"
@@ -108,75 +41,36 @@ confirm() {
         fi
         
         case "${answer:0:1}" in
-            [Yy]* ) return 0 ;;
-            [Nn]* ) return 1 ;;
-            * ) echo "Please answer yes or no." ;;
+            [Yy]*) return 0 ;;
+            [Nn]*) return 1 ;;
+            *) echo "Please answer yes or no." ;;
         esac
     done
 }
 
-# Get user input with validation
 get_input() {
     local prompt="$1"
     local default="${2:-}"
-    local validator="${3:-}"
     local value
     
-    while true; do
-        if [[ -n "$default" ]]; then
-            read -p "$prompt [$default]: " value
-            value="${value:-$default}"
-        else
-            read -p "$prompt: " value
-        fi
-        
-        if [[ -n "$validator" ]] && ! eval "$validator '$value'"; then
-            log_error "Invalid input. Please try again."
-            continue
-        fi
-        
-        echo "$value"
-        break
-    done
-}
-
-# =============================================================================
-# System Information
-# =============================================================================
-
-# Get macOS version
-get_macos_version() {
-    sw_vers -productVersion
-}
-
-# Check if running on Apple Silicon
-is_apple_silicon() {
-    [[ "$(uname -m)" == "arm64" ]]
-}
-
-# =============================================================================
-# Package Management
-# =============================================================================
-
-# Check if Homebrew is installed
-is_brew_installed() {
-    command_exists brew
-}
-
-# Get Homebrew prefix
-get_brew_prefix() {
-    if is_apple_silicon; then
-        echo "/opt/homebrew"
+    if [[ -n "$default" ]]; then
+        read -p "$prompt [$default]: " value
+        echo "${value:-$default}"
     else
-        echo "/usr/local"
+        read -p "$prompt: " value
+        echo "$value"
     fi
 }
 
-# =============================================================================
-# Cleanup and Maintenance
-# =============================================================================
+# System information
+get_macos_version() { sw_vers -productVersion; }
+is_apple_silicon() { [[ "$(uname -m)" == "arm64" ]]; }
 
-# Create backup of file
+# Homebrew helpers
+is_brew_installed() { command_exists brew; }
+get_brew_prefix() { is_apple_silicon && echo "/opt/homebrew" || echo "/usr/local"; }
+
+# File operations
 backup_file() {
     local file="$1"
     local backup_dir="${2:-${HOME}/.macos-setup/backups}"
@@ -190,32 +84,8 @@ backup_file() {
     fi
 }
 
-# =============================================================================
-# Performance and Progress
-# =============================================================================
-
-# Show progress bar
-show_progress() {
-    local current="$1"
-    local total="$2"
-    local prefix="${3:-Progress}"
-    
-    local percent=$((current * 100 / total))
-    local filled=$((percent / 2))
-    local empty=$((50 - filled))
-    
-    printf "\r%s: [" "$prefix"
-    printf "%*s" "$filled" | tr ' ' '█'
-    printf "%*s" "$empty" | tr ' ' '░'
-    printf "] %d%%" "$percent"
-    
-    if [[ "$current" -eq "$total" ]]; then
-        echo
-    fi
-}
-
-# Initialize utilities
+# Initialize
 init_utils() {
     check_macos
-    log_info "Starting $SCRIPT_NAME v$SCRIPT_VERSION"
+    log_debug "Utils v$VERSION loaded"
 } 
