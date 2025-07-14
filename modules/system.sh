@@ -205,8 +205,6 @@ remap_keyboard() {
 configure_1password_ssh() {
     local ssh_dir="$HOME/.ssh"
     local ssh_config="$ssh_dir/config"
-    local agent_line='  IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"'
-    local host_line='Host *'
 
     if [[ ! -d "$ssh_dir" ]]; then
         mkdir -p "$ssh_dir"
@@ -219,31 +217,51 @@ configure_1password_ssh() {
     fi
 
     if [[ ! -f "$ssh_config" ]]; then
-        echo -e "$host_line\n$agent_line" > "$ssh_config"
+        touch "$ssh_config"
         chmod 600 "$ssh_config"
-        log_success "Created $ssh_config with 1Password SSH agent configuration."
-        return 0
     fi
 
-    if grep -q 'IdentityAgent.*1password' "$ssh_config"; then
-        log_success "1Password SSH agent is already configured in $ssh_config."
-        return 0
+    local changes_made=false
+
+    # Check and add general 1Password SSH agent configuration
+    if ! grep -q "Host \*" "$ssh_config" || ! grep -A 1 "Host \*" "$ssh_config" | grep -q "IdentityAgent.*1password"; then
+        echo "" >> "$ssh_config"
+        echo "# 1Password SSH Agent Configuration" >> "$ssh_config"
+        echo "Host *" >> "$ssh_config"
+        echo "  IdentityAgent \"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock\"" >> "$ssh_config"
+        log_info "Added general 1Password SSH agent configuration."
+        changes_made=true
     fi
 
-    if grep -q "^Host \*" "$ssh_config"; then
-        awk -v agent_line="$agent_line" '
-            $0 ~ /^Host \*/ {print; found=1; next}
-            found && $0 ~ /^  IdentityAgent/ {next}
-            {print}
-            END {if (!found) print "Host *\n" agent_line}
-        ' "$ssh_config" > "$ssh_config.tmp" && mv "$ssh_config.tmp" "$ssh_config"
-        if ! awk '/^Host \*/{f=1} f && /IdentityAgent.*1password/{found=1; exit} END{exit !found}' "$ssh_config"; then
-            awk '/^Host \*/{print; print "  IdentityAgent \"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock\""; next} {print}' "$ssh_config" > "$ssh_config.tmp" && mv "$ssh_config.tmp" "$ssh_config"
-        fi
-        log_success "Updated $ssh_config with 1Password SSH agent configuration."
+    # Check and add GitHub configuration
+    if ! grep -q "Host github.com" "$ssh_config"; then
+        echo "" >> "$ssh_config"
+        echo "# GitHub SSH Configuration" >> "$ssh_config"
+        echo "Host github.com" >> "$ssh_config"
+        echo "  HostName github.com" >> "$ssh_config"
+        echo "  User git" >> "$ssh_config"
+        echo "  IdentityAgent \"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock\"" >> "$ssh_config"
+        log_info "Added GitHub SSH configuration."
+        changes_made=true
+    fi
+
+    # Check and add GitLab configuration
+    if ! grep -q "Host gitlab.com" "$ssh_config"; then
+        echo "" >> "$ssh_config"
+        echo "# GitLab SSH Configuration" >> "$ssh_config"
+        echo "Host gitlab.com" >> "$ssh_config"
+        echo "  HostName gitlab.com" >> "$ssh_config"
+        echo "  User git" >> "$ssh_config"
+        echo "  IdentityAgent \"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock\"" >> "$ssh_config"
+        log_info "Added GitLab SSH configuration."
+        changes_made=true
+    fi
+
+    if [[ "$changes_made" == true ]]; then
+        log_success "1Password SSH agent configuration updated in $ssh_config."
     else
-        echo -e "\n$host_line\n$agent_line" >> "$ssh_config"
-        log_success "Appended 1Password SSH agent configuration to $ssh_config."
+        log_success "1Password SSH agent is already fully configured in $ssh_config."
     fi
+
     chmod 600 "$ssh_config"
 } 
