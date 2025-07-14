@@ -9,10 +9,53 @@
 readonly MAIN_GITCONFIG="$HOME/.gitconfig"
 readonly PERSONAL_GITCONFIG="$HOME/.gitconfig-personal"
 readonly WORK_GITCONFIG="$HOME/.gitconfig-work"
+readonly FZF_GIT_DIR="$HOME/fzf-git.sh"
 
 # =============================================================================
 # Simple Git Setup Functions
 # =============================================================================
+
+# Install fzf-git.sh - fuzzy finder for git
+install_fzf_git() {
+    log_info "Installing fzf-git.sh..."
+    
+    # Check if git is available
+    if ! command_exists git; then
+        log_error "Git is required to clone fzf-git.sh repository"
+        return 1
+    fi
+    
+    # Remove existing directory if it exists
+    if [[ -d "$FZF_GIT_DIR" ]]; then
+        log_info "Existing fzf-git.sh directory found. Updating..."
+        cd "$FZF_GIT_DIR" && git pull origin main 2>/dev/null || {
+            log_warn "Failed to update existing repository. Removing and re-cloning..."
+            rm -rf "$FZF_GIT_DIR"
+        }
+    fi
+    
+    # Clone the repository if it doesn't exist or was removed
+    if [[ ! -d "$FZF_GIT_DIR" ]]; then
+        log_info "Cloning fzf-git.sh repository to $FZF_GIT_DIR..."
+        git clone https://github.com/junegunn/fzf-git.sh.git "$FZF_GIT_DIR" || {
+            log_error "Failed to clone fzf-git.sh repository"
+            return 1
+        }
+    fi
+    
+    log_success "fzf-git.sh installed successfully at $FZF_GIT_DIR"
+    echo
+    echo "To use fzf-git.sh, add this to your ~/.zshrc or ~/.bashrc:"
+    echo "source ~/fzf-git.sh/fzf-git.sh"
+    echo
+    echo "This provides enhanced git commands with fuzzy finding:"
+    echo "• CTRL-G CTRL-F for git files"
+    echo "• CTRL-G CTRL-B for git branches"
+    echo "• CTRL-G CTRL-T for git tags"
+    echo "• CTRL-G CTRL-H for git commit hashes"
+    echo "• CTRL-G CTRL-R for git remotes"
+    echo "• CTRL-G CTRL-S for git stashes"
+}
 
 # Setup Git identities using .env file (like legacy version)
 setup_git_identities() {
@@ -179,10 +222,18 @@ show_git_menu() {
             echo "❌ Git is not installed"
         fi
         
+        # Check fzf-git.sh status
+        if [[ -d "$FZF_GIT_DIR" ]]; then
+            echo "✅ fzf-git.sh is installed at $FZF_GIT_DIR"
+        else
+            echo "❌ fzf-git.sh is not installed"
+        fi
+        
         echo
         echo "1) Install/Setup Git"
         echo "2) Setup Git identities"
-        echo "3) Show Git status"
+        echo "3) Install fzf-git.sh (fuzzy finder for git)"
+        echo "4) Show Git status"
         echo "0) Back to main menu"
         
         local choice=$(get_input "Enter your choice" "0")
@@ -190,7 +241,8 @@ show_git_menu() {
         case "$choice" in
             "1") setup_git ;;
             "2") setup_git_identities ;;
-            "3") show_git_status ;;
+            "3") install_fzf_git ;;
+            "4") show_git_status ;;
             "0") break ;;
             *) log_error "Invalid choice: $choice" ;;
         esac
