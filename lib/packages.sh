@@ -29,8 +29,7 @@ ESSENTIALS_PACKAGES=(
     "git:cli:Distributed version control system"
     "curl:cli:Command line tool for transferring data"
     "wget:cli:Internet file retriever"
-    "jq:cli:Lightweight JSON processor"
-    "tree:cli:Display directory tree structure"
+    "dialog:cli:Display dialog boxes from shell scripts"
 )
 
 # Development Tools
@@ -46,6 +45,11 @@ DEVELOPMENT_PACKAGES=(
     "postman:cask:API development environment"
     "fork:cask:Git client"
     "sourcetree:cask:Git GUI client"
+    "pre-commit:cli:Git hook manager"
+    "git-delta:cli:Git diff viewer"
+    "pycharm:cask:JetBrains Python IDE"
+    "cursor:cask:Cursor Code editor"
+    "goland:cask:JetBrains Go IDE"
 )
 
 # Cloud & Infrastructure
@@ -62,6 +66,7 @@ CLOUD_PACKAGES=(
     "argocd:cli:GitOps continuous delivery tool"
     "aws-vpn-client:cask:AWS VPN client"
     "lens:cask:Kubernetes IDE"
+    "gcloud-cli:cask:Google Cloud CLI"
 )
 
 # Container Tools
@@ -79,6 +84,7 @@ DATABASE_PACKAGES=(
 # Terminal Enhancement
 TERMINAL_PACKAGES=(
     "iterm2:cask:Advanced terminal emulator"
+    "kitty:cask:Modern terminal emulator"
     "warp:cask:Modern terminal with AI features"
     "tmux:cli:Terminal multiplexer"
     "fzf:cli:Fuzzy finder for command line"
@@ -87,11 +93,21 @@ TERMINAL_PACKAGES=(
     "tldr:cli:Simplified man pages"
     "zsh-autosuggestions:cli:Fish-like autosuggestions for zsh"
     "zsh-syntax-highlighting:cli:Syntax highlighting for zsh"
+    "grep:cli:Pattern search utility"
+    "kubecolor:cli:Colorful kubectl output"
+    "yazi:cli:File manager"
+    "trivy:cli:Vulnerability scanner"
+    "bat:cli:Cat alternative"
+    "fd:cli:Fast directory listing"
+    "eza:cli:Modern ls alternative"
+    "zoxide:cli:Faster cd command"
+    "starship:cli:Cross-shell prompt"
 )
 
 # System Utilities
 SYSTEM_PACKAGES=(
     "yq:cli:YAML processor"
+    "jq:cli:JSON processor"
     "watch:cli:Execute commands periodically"
     "kcat:cli:Kafka command line tool"
     "wakeonlan:cli:Wake on LAN tool"
@@ -102,6 +118,10 @@ SYSTEM_PACKAGES=(
     "lunar:cask:Intelligent adaptive brightness"
     "raycast:cask:Productivity launcher"
     "stretchly:cask:Break reminder app"
+    "rectangle-pro:cask:Advanced window management utility"
+    "aerospace:cask:Tiling window manager for macOS"
+    "powerlevel10k:cli:Powerlevel10k zsh theme"
+    "garmin-express:cask:Garmin Connect sync tool"
 )
 
 # Communication & Productivity
@@ -120,11 +140,14 @@ IAC_PACKAGES=(
     "tflint:cli:Terraform linter"
     "ansible:cli:Configuration management"
     "ansible-lint:cli:Ansible linter"
+    "terraformer:cli:Terraform to other formats converter"
+    "terraform-docs:cli:Terraform documentation generator"
 )
 
 # AI Tools
 AI_PACKAGES=(
     "lm-studio:cask:Local language model studio"
+    "ollama:cli:Local language model runner"
 )
 
 # =============================================================================

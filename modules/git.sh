@@ -44,17 +44,6 @@ install_fzf_git() {
     fi
     
     log_success "fzf-git.sh installed successfully at $FZF_GIT_DIR"
-    echo
-    echo "To use fzf-git.sh, add this to your ~/.zshrc or ~/.bashrc:"
-    echo "source ~/fzf-git.sh/fzf-git.sh"
-    echo
-    echo "This provides enhanced git commands with fuzzy finding:"
-    echo "• CTRL-G CTRL-F for git files"
-    echo "• CTRL-G CTRL-B for git branches"
-    echo "• CTRL-G CTRL-T for git tags"
-    echo "• CTRL-G CTRL-H for git commit hashes"
-    echo "• CTRL-G CTRL-R for git remotes"
-    echo "• CTRL-G CTRL-S for git stashes"
 }
 
 # Setup Git identities using .env file (like legacy version)
@@ -202,6 +191,44 @@ show_git_status() {
     [[ -f "$WORK_GITCONFIG" ]] && echo "  ✅ $WORK_GITCONFIG" || echo "  ❌ $WORK_GITCONFIG"
 }
 
+# Configure git-delta in ~/.gitconfig
+configure_git_delta() {
+    if ! command_exists delta; then
+        log_error "git-delta (delta) is not installed. Please install it first."
+        return 1
+    fi
+
+    local gitconfig="$HOME/.gitconfig"
+    backup_file "$gitconfig"
+
+    # Add core.pager and interactive.diffFilter if not present
+    if ! grep -q '^\s*pager\s*=\s*delta' "$gitconfig"; then
+        git config --global core.pager delta
+        log_info "Set core.pager to delta in ~/.gitconfig"
+    fi
+    if ! grep -q '^\s*diffFilter\s*=\s*delta --color-only' "$gitconfig"; then
+        git config --global interactive.diffFilter 'delta --color-only'
+        log_info "Set interactive.diffFilter to 'delta --color-only' in ~/.gitconfig"
+    fi
+
+    # Add [delta] section with recommended options if not present
+    if ! grep -q '^\[delta\]' "$gitconfig"; then
+        cat >> "$gitconfig" <<EOF
+
+[delta]
+    navigate = true
+    side-by-side = true
+EOF
+        log_info "Added [delta] section to ~/.gitconfig"
+    else
+        # Ensure options are present
+        git config --global delta.navigate true
+        git config --global delta.side-by-side true
+    fi
+
+    log_success "git-delta configuration applied to ~/.gitconfig!"
+}
+
 # Simple Git menu
 show_git_menu() {
     while true; do
@@ -234,6 +261,7 @@ show_git_menu() {
         echo "2) Setup Git identities"
         echo "3) Install fzf-git.sh (fuzzy finder for git)"
         echo "4) Show Git status"
+        echo "5) Configure git-delta (diff viewer)"
         echo "0) Back to main menu"
         
         local choice=$(get_input "Enter your choice" "0")
@@ -243,6 +271,7 @@ show_git_menu() {
             "2") setup_git_identities ;;
             "3") install_fzf_git ;;
             "4") show_git_status ;;
+            "5") configure_git_delta ;;
             "0") break ;;
             *) log_error "Invalid choice: $choice" ;;
         esac

@@ -85,12 +85,15 @@ COMMANDS:
     packages            Manage package installation
     system              Configure system settings
     git                 Setup Git configuration
+    themes              Install Catppuccin themes for various applications
+    backup              Export and backup configuration files
     all                 Install everything with recommended settings
 
 EXAMPLES:
     $0                  # Start interactive menu
     $0 homebrew         # Install Homebrew only
     $0 packages         # Show package management menu
+    $0 themes           # Show themes installation menu
 
 FILES:
     .env               Environment variables (optional)
@@ -122,7 +125,7 @@ parse_arguments() {
                 DEBUG=1
                 shift
                 ;;
-            menu|homebrew|packages|system|git|all)
+            menu|homebrew|packages|system|git|themes|backup|all)
                 COMMAND="$1"
                 shift
                 ;;
@@ -340,8 +343,10 @@ show_main_menu() {
         echo " 2) 📦 Package Installation"
         echo " 3) 🛠️  System Configuration"
         echo " 4) 🔧 Git Configuration"
-        echo " 5) 🚀 Install Essentials"
-        echo " 6) 📊 System Status Report"
+        echo " 5) 🎨 Themes Installation"
+        echo " 6) 📦 Configuration Backup"
+        echo " 7) 🚀 Install Essentials"
+        echo " 8) 📊 System Status Report"
         echo " 0) 🚪 Exit"
         
         echo
@@ -352,8 +357,10 @@ show_main_menu() {
             "2") show_packages_menu ;;
             "3") show_system_menu ;;
             "4") show_git_menu ;;
-            "5") install_essentials ;;
-            "6") show_status_report ;;
+            "5") show_themes_menu ;;
+            "6") show_backup_menu ;;
+            "7") install_essentials ;;
+            "8") show_status_report ;;
             "0") log_info "macOS Setup exiting!"; exit 0 ;;
             *) log_error "Invalid choice: $choice" ;;
         esac
@@ -474,6 +481,12 @@ main() {
             ;;
         "git")
             show_git_menu
+            ;;
+        "themes")
+            show_themes_menu
+            ;;
+        "backup")
+            show_backup_menu
             ;;
         "all")
             install_essentials
