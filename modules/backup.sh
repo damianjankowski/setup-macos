@@ -111,6 +111,37 @@ export_yazi_config() {
     }
 }
 
+export_starship_config() {
+    log_info "Exporting Starship config..."
+    
+    local backup_dir="${1:-$(init_backup_dir)}"
+    local found_files=0
+    
+    mkdir -p "$backup_dir/starship"
+    
+    shopt -s nullglob  
+    local starship_files=()
+    starship_files+=("$HOME"/.config/starship*.toml)
+    starship_files+=("$HOME"/.config/starship*.yaml)
+    starship_files+=("$HOME"/.config/starship*.yml)
+    shopt -u nullglob  
+    
+    for file in "${starship_files[@]}"; do
+        if [[ -f "$file" ]]; then
+            local filename=$(basename "$file")
+            cp "$file" "$backup_dir/starship/$filename" && ((found_files++))
+        fi
+    done
+    
+    if [[ $found_files -eq 0 ]]; then
+        log_warn "No Starship config files found"
+        return 1
+    fi
+    
+    [[ -z "$1" ]] && log_success "Starship config exported to: ./configs/$(basename "$backup_dir")/starship ($found_files files)"
+    return 0
+}
+
 export_all_configs() {
     log_info "Exporting all configurations..."
     
@@ -120,14 +151,50 @@ export_all_configs() {
     echo
     
     local exported=0
-    local total=5
+    local total=6
     local results=()
     
-    export_ssh_config "$backup_dir" && results+=("✅ SSH config") && ((exported++)) || results+=("❌ SSH config")
-    export_zshrc "$backup_dir" && results+=("✅ .zshrc") && ((exported++)) || results+=("❌ .zshrc")
-    export_aerospace_config "$backup_dir" && results+=("✅ Aerospace") && ((exported++)) || results+=("❌ Aerospace")
-    export_kitty_config "$backup_dir" && results+=("✅ Kitty") && ((exported++)) || results+=("❌ Kitty")
-    export_yazi_config "$backup_dir" && results+=("✅ Yazi") && ((exported++)) || results+=("❌ Yazi")
+    if export_ssh_config "$backup_dir"; then
+        results+=("✅ SSH config")
+        ((exported++))
+    else
+        results+=("❌ SSH config")
+    fi
+    
+    if export_zshrc "$backup_dir"; then
+        results+=("✅ .zshrc")
+        ((exported++))
+    else
+        results+=("❌ .zshrc")
+    fi
+    
+    if export_aerospace_config "$backup_dir"; then
+        results+=("✅ Aerospace")
+        ((exported++))
+    else
+        results+=("❌ Aerospace")
+    fi
+    
+    if export_kitty_config "$backup_dir"; then
+        results+=("✅ Kitty")
+        ((exported++))
+    else
+        results+=("❌ Kitty")
+    fi
+    
+    if export_yazi_config "$backup_dir"; then
+        results+=("✅ Yazi")
+        ((exported++))
+    else
+        results+=("❌ Yazi")
+    fi
+    
+    if export_starship_config "$backup_dir"; then
+        results+=("✅ Starship")
+        ((exported++))
+    else
+        results+=("❌ Starship")
+    fi
     
     echo
     echo "Backup Summary:"
@@ -149,10 +216,11 @@ show_backup_menu() {
         echo "3) Aerospace config"
         echo "4) Kitty config"
         echo "5) Yazi config"
-        echo "6) Export all"
+        echo "6) Starship config"
+        echo "7) Export all"
         echo "0) Back"
         
-        read -p "Choice [0-6]: " choice
+        read -p "Choice [0-7]: " choice
         
         case "$choice" in
             1) export_ssh_config ;;
@@ -160,7 +228,8 @@ show_backup_menu() {
             3) export_aerospace_config ;;
             4) export_kitty_config ;;
             5) export_yazi_config ;;
-            6) export_all_configs ;;
+            6) export_starship_config ;;
+            7) export_all_configs ;;
             0) break ;;
             *) log_error "Invalid choice" ;;
         esac

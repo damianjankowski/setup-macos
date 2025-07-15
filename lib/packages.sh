@@ -21,6 +21,24 @@ DEVELOPMENT_PACKAGES=(
     "pre-commit:cli:Git hook manager"
     "git-delta:cli:Git diff viewer"
     "cursor:cask:AI code editor"
+    "pyenv-virtualenv:cli:Python virtual environment manager"
+    "dbeaver-community:cask:Database client"
+)
+
+JETBRAINS_PACKAGES=(
+    "pycharm:cask:Python IDE"
+    "pycharm-ce:cask:Python Community IDE"
+    "intellij-idea:cask:Java IDE"
+    "intellij-idea-ce:cask:Java Community Edition"
+    "goland:cask:Go IDE"
+    "rubymine:cask:Ruby IDE"
+    "webstorm:cask:Web development"
+    "datagrip:cask:Database IDE"
+    "clion:cask:C/C++ IDE"
+    "resharper:cask:C# IDE"
+    "rustrover:cask:Rust IDE"
+    "clion:cask:C/C++ IDE"
+    "rider:cask:C# IDE"
 )
 
 CLOUD_PACKAGES=(
@@ -30,8 +48,19 @@ CLOUD_PACKAGES=(
     "kubernetes-cli:cli:kubectl"
     "helm:cli:Kubernetes package manager"
     "k9s:cli:Kubernetes cluster management"
-    "terraform:cli:Infrastructure as code"
     "aws-vpn-client:cask:AWS VPN client"
+    "argocd:cli:ArgoCD"
+    "granted:cli:AWS IAM credentials"
+    "lens:cask:Kubernetes IDE"
+    "orbstack:cask:Docker alternative"
+    "gloud-cli:cli:Google Cloud CLI"
+)
+
+IAC_PACKAGES=(
+    "terraformer:cli:Terraform state to code"
+    "tfenv:cli:Terraform version manager"
+    "terraform:cli:Infrastructure as code"
+    "tflint:cli:Terraform linter"
 )
 
 CONTAINER_PACKAGES=(
@@ -45,22 +74,45 @@ TERMINAL_PACKAGES=(
     "kitty:cask:GPU terminal"
     "warp:cask:Modern terminal"
     "tmux:cli:Terminal multiplexer"
+    "ghostty:cask:Terminal emulator"
+)
+
+TERMINAL_UTILS_PACKAGES=(
+    "eza:cli:Modern ls"
+    "bat:cli:Cat with syntax highlighting"
+    "tldr:cli:Simplified man pages"
+    "fzf:cli:Fuzzy finder"
+    "htop:cli:Process viewer"
+    "jq:cli:JSON processor"
+    "yq:cli:YAML processor"
+    "stats:cask:System monitor"
     "fzf:cli:Fuzzy finder"
     "htop:cli:Process viewer"
     "tldr:cli:Simplified man pages"
     "bat:cli:Cat with syntax highlighting"
     "eza:cli:Modern ls"
-    "starship:cli:Shell prompt"
+    "starship:cli:Cross-shell prompt"
+    "powerlevel10k:cli:Powerlevel10k"
+    "fd:cli:Fast file finder"
+    "ripgrep:cli:Fast grep"
+    "grep:cli:Grep"
+    "zoxide:cli:Fast cd"
+    "fish:cli:Fish shell"
+    "kubecolor:cli:Kubernetes color output"
+    "yazi:cli:File manager"
+    "thefuck:cli:Command line tool to fix mistakes"
+    "tree:cli:Tree view of directory structure"
+    "fastfetch:cli:System information"
 )
 
 SYSTEM_PACKAGES=(
-    "jq:cli:JSON processor"
-    "yq:cli:YAML processor"
     "rectangle:cask:Window manager"
     "stats:cask:System monitor"
     "raycast:cask:Launcher"
     "lunar:cask:Brightness control"
     "karabiner-elements:cask:Keyboard customizer"
+    "aerospace:cask:Window manager"
+
 )
 
 COMMUNICATION_PACKAGES=(
@@ -68,6 +120,17 @@ COMMUNICATION_PACKAGES=(
     "discord:cask:Voice chat"
     "spotify:cask:Music streaming"
     "obsidian:cask:Note taking"
+)
+
+AI_PACKAGES=(
+    "ollama:cli:AI model runner"
+    "lm-studio:cask:AI model runner"
+)
+
+TOOLS_PACKAGES=(
+    "garmin-express:cask:Garmin Connect"
+    "obsidian:cask:Note taking"
+    "notion:cask:Note taking"
 )
 
 init_packages() {
@@ -220,30 +283,49 @@ select_packages() {
 show_packages_menu() {
     while true; do
         echo
-        log_info "Package Manager"
-        echo "1) Essentials"
-        echo "2) Development" 
-        echo "3) Cloud"
-        echo "4) Container"
-        echo "5) Terminal"
-        echo "6) System"
-        echo "7) Communication"
-        echo "8) Show installed"
-        echo "9) Update all"
-        echo "0) Back"
+        log_info "📦 Package Manager"
+        echo "Development:"
+        echo "  1) Essentials"
+        echo "  2) Development Tools"
+        echo "  3) JetBrains IDEs"
+        echo "  4) AI Tools"
+        echo
+        echo "Infrastructure:"
+        echo "  5) Cloud Tools"
+        echo "  6) Infrastructure as Code"
+        echo "  7) Container Tools"
+        echo
+        echo "Terminal & System:"
+        echo "  8) Terminal Emulators"
+        echo "  9) Terminal Utilities"
+        echo " 10) System Tools"
+        echo
+        echo "Productivity:"
+        echo " 11) Communication"
+        echo " 12) General Tools"
+        echo
+        echo "Management:"
+        echo " 13) Show installed"
+        echo " 14) Update all"
+        echo "  0) Back"
         
-        read -p "Choice [0-9]: " choice
+        read -p "Choice [0-14]: " choice
         
         case "$choice" in
             1) select_packages "essentials" ;;
             2) select_packages "development" ;;
-            3) select_packages "cloud" ;;
-            4) select_packages "container" ;;
-            5) select_packages "terminal" ;;
-            6) select_packages "system" ;;
-            7) select_packages "communication" ;;
-            8) show_installed ;;
-            9) update_packages ;;
+            3) select_packages "jetbrains" ;;
+            4) select_packages "ai" ;;
+            5) select_packages "cloud" ;;
+            6) select_packages "iac" ;;
+            7) select_packages "container" ;;
+            8) select_packages "terminal" ;;
+            9) select_packages "terminal_utils" ;;
+            10) select_packages "system" ;;
+            11) select_packages "communication" ;;
+            12) select_packages "tools" ;;
+            13) show_installed ;;
+            14) update_packages ;;
             0) return ;;
             *) log_error "Invalid choice" ;;
         esac
