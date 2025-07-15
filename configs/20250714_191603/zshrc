@@ -120,9 +120,8 @@ if [[ -f "$aliases_file" ]]; then
   source "$aliases_file"
 fi
 
-# ---- DYNATRACE Aliases ----
-alias dynatraceprodurl="export DYNATRACE_ENV_URL=https://xkj27738.live.dynatrace.com"
-alias dynatracedevurl="export DYNATRACE_ENV_URL=https://dhy15675.live.dynatrace.com"
+# ---- Fastfetch ----
+fastfetch
 
 # ---- Measure zsh load time ----
 # zsh_end_time=$EPOCHRALTIME
