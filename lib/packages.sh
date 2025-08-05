@@ -112,6 +112,10 @@ COMMUNICATION_PACKAGES=(
 AI_PACKAGES=(
     "ollama:cli:AI model runner"
     "lm-studio:cask:AI model runner"
+    "claude-cli:cli:AI model runner"
+    "claude:cask:AI"
+    "chatgpt:cask:AI"
+    "gemini-cli:cli:AI model runner"
 )
 
 TOOLS_PACKAGES=(
