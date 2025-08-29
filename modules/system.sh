@@ -64,9 +64,9 @@ check_rosetta_status() {
 # Finder settings configuration array
 # Format: "id|type|domain|key|configure_value|default_value|configure_desc|default_desc"
 declare -a FINDER_SETTINGS=(
-	"1|bool|com.apple.finder|AppleShowAllFiles|true|false|Show hidden files|Hide hidden files"
-	"2|string|com.apple.screencapture|type|jpg|png|Set screenshot type to jpg|Set screenshot type to png"
-	"3|location|com.apple.screencapture|location|${HOME}/Desktop||Set screenshot location to Desktop|Reset screenshot location to default"
+    "1|bool|com.apple.finder|AppleShowAllFiles|true|false|Show hidden files|Hide hidden files"
+    "2|string|com.apple.screencapture|type|jpg|png|Set screenshot type to jpg|Set screenshot type to png"
+    "3|location|com.apple.screencapture|location|${HOME}/Desktop||Set screenshot location to Desktop|Reset screenshot location to default"
 	"4|bool|com.apple.finder|ShowStatusBar|true|false|Show status bar|Hide status bar"
 	"5|bool|com.apple.finder|ShowPathbar|true|false|Show path bar|Hide path bar"
 	"6|string|com.apple.finder|FXPreferredViewStyle|Nlsv|icnv|Use list view by default|Use icon view by default"
@@ -104,7 +104,7 @@ apply_finder_setting() {
                     if [[ "$mode" == "revert" && -z "$target_value" ]]; then
                         defaults delete "$s_domain" "$s_key" 2>/dev/null || true
                     else
-                        defaults write "$s_domain" "$s_key" -string "$target_value"
+                    defaults write "$s_domain" "$s_key" -string "$target_value"
                     fi
                     log_info "$emoji $target_desc"
                     ;;
@@ -162,11 +162,9 @@ configure_finder_settings_menu() {
         apply_finder_setting "$choice" "configure"
     done
     
-    killall cfprefsd 2>/dev/null || true
     killall Finder 2>/dev/null || true
-    killall SystemUIServer 2>/dev/null || true
     log_success "Selected Finder settings configured!"
-    log_info "Finder and preferences services restarted"
+    log_info "Finder restarted"
 }
 
 revert_finder_settings_to_defaults() {
@@ -179,14 +177,12 @@ revert_finder_settings_to_defaults() {
     done
     
     echo
-    log_info "Restarting Finder and related services..."
-    killall cfprefsd 2>/dev/null || true
+    log_info "Restarting Finder..."
     killall Finder 2>/dev/null || true
-    killall SystemUIServer 2>/dev/null || true
     sleep 1
     
     log_success "All Finder settings reverted to macOS defaults!"
-    log_info "Finder and preferences services restarted"
+    log_info "Finder restarted"
 }
 
 remap_keyboard() {
@@ -269,9 +265,9 @@ EOF
 configure_hostname() {
   local name="${HOSTNAME}"
   if [[ -z "$name" ]]; then
-    log_error "HOSTNAME is not set"
-    return 1
-  fi
+        log_error "HOSTNAME is not set"
+        return 1
+    fi
   sudo scutil --set HostName "$name"
   sudo scutil --set LocalHostName "$name"
   sudo scutil --set ComputerName "$name"
