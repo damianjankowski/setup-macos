@@ -402,10 +402,6 @@ categories:
         brew_type: cask
         description: AI model runner
         default: false
-      - id: claude-cli
-        brew_type: cli
-        description: AI model runner
-        default: false
       - id: claude
         brew_type: cask
         description: AI
@@ -415,6 +411,14 @@ categories:
         description: AI
         default: false
       - id: gemini-cli
+        brew_type: cli
+        description: AI model runner
+        default: false
+      - id: cursor-cli
+        brew_type: cli
+        description: AI model runner
+        default: false
+      - id: claude-cli
         brew_type: cli
         description: AI model runner
         default: false
