@@ -2,14 +2,14 @@
 
 setup_granted() {
     log_info "Setting up Granted..."
+
+    mkdir -p ~/.aws/config
     
     require_tool granted
 
 	granted credentials add
 
-	
     log_info "Setting up Granted..."
-
 }
 
 show_aws_menu() {
