@@ -3,7 +3,9 @@
 setup_granted() {
     log_info "Setting up Granted..."
 
-    mkdir -p ~/.aws/config
+    if ! check_if_file_exists ~/.aws/config; then
+        mkdir -p ~/.aws/config
+    fi
     
     require_tool granted
 
