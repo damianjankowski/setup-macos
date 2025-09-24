@@ -6,94 +6,99 @@ show_package_manager_menu() {
     echo "│       Package Manager       │"
     echo "└─────────────────────────────┘"
     echo ""
+	echo "1) Install all"
     echo "Development"
-    echo "1) Essentials"
-    echo "2) Development Tools"
-    echo "3) JetBrains IDEs"
-    echo "4) AI Tools"
+    echo "2) Essentials"
+    echo "3) Development Tools"
+    echo "4) JetBrains IDEs"
+    echo "5) AI Tools"
     echo ""
     echo "Infrastructure"
-    echo "5) Cloud Tools"
-    echo "6) Infrastructure as Code"
-    echo "7) Container Tools"
+    echo "6) Cloud Tools"
+    echo "7) Infrastructure as Code"
+    echo "8) Container Tools"
     echo ""
     echo "Terminal & System"
-    echo "8) Terminal Emulators"
-    echo "9) Terminal Utilities"
-    echo "10) System Tools"
+    echo "9) Terminal Emulators"
+    echo "10) Terminal Utilities"
+    echo "11) System Tools"
     echo ""
     echo "Productivity"
-    echo "11) Communication"
-    echo "12) General Tools"
+    echo "12) Communication"
+    echo "13) General Tools"
     echo ""
     echo "Management"
-    echo "13) Show installed"
-    echo "14) Update all cli"
-	echo "15) Update all cask"
-    echo "16) Zap uninstall packages"
-    echo "17) Cleanup"
+    echo "14) Show installed"
+    echo "15) Update all cli"
+	echo "16) Update all cask"
+    echo "17) Zap uninstall packages"
+    echo "18) Cleanup"
     echo ""
     echo "0) Back"
     echo ""
 }
+
 handle_package_manager_menu() {
     while true; do
         show_package_manager_menu
-        read -p "Choice [0-17]: " choice
+        read -p "Choice [0-18]: " choice
         
         case $choice in
-		1)  # Essentials
+		1)  # Install all
+			select_packages_from_catalog "all" "./catalog.yaml"
+			;;
+		2)  # Essentials
 			select_packages_from_catalog "essentials" "./catalog.yaml"
 			;;
-		2)  # Development Tools
+		3)  # Development Tools
 			select_packages_from_catalog "development" "./catalog.yaml"
 			;;
-		3)  # JetBrains IDEs
+		4)  # JetBrains IDEs
 			select_packages_from_catalog "jetbrains" "./catalog.yaml"
 			;;
-		4)  # AI Tools
+		5)  # AI Tools
 			select_packages_from_catalog "ai" "./catalog.yaml"
 			;;
-		5)  # Cloud Tools
+		6)  # Cloud Tools
 			select_packages_from_catalog "cloud" "./catalog.yaml"
 			;;
-		6)  # Infrastructure as Code
+		7)  # Infrastructure as Code
 			select_packages_from_catalog "iac" "./catalog.yaml"
 			;;
-		7)  # Container Tools
+		8)  # Container Tools
 			select_packages_from_catalog "container" "./catalog.yaml"
 			;;
-		8)  # Terminal Emulators
+		9)  # Terminal Emulators
 			select_packages_from_catalog "terminal" "./catalog.yaml"
 			;;
-		9)  # Terminal Utilities
+		10) # Terminal Utilities
 			select_packages_from_catalog "terminal-utils" "./catalog.yaml"
 			;;
-		10) # System Tools
+		11) # System Tools
 			select_packages_from_catalog "system" "./catalog.yaml"
 			;;
-		11) # Communication
+		12) # Communication
 			select_packages_from_catalog "communication" "./catalog.yaml"
 			;;
-		12) # General Tools
+		13) # General Tools
 			select_packages_from_catalog "tools" "./catalog.yaml"
 			;;
-		13)
+		14)
 			show_installed
 			;;
-		14)
+		15)
 			update_all_cli
 			wait_for_user
 			;;
-		15)
+		16)
 			update_all_cask
 			wait_for_user
 			;;
-		16)
+		17)
 			zap_uninstall_packages
 			wait_for_user
 			;;
-		17)
+		18)
 			cleanup_homebrew
 			wait_for_user
 			;;

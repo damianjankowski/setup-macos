@@ -6,10 +6,18 @@ _build_checklist_tsv() {
 
     yq -o=json "$catalog_path" | jq -r --arg cat "$category" '
       . as $root |
-      (
-        ( ($root.categories // []) | map(select((.id==$cat) or (.name==$cat))) | .[0]?.packages ) //
-        ( $root[$cat].packages // $root[$cat] // $root.packages // [] )
-      )
+      if $cat == "all" then
+        # Flatten all categories packages and keep only defaults
+        ( ($root.categories // [])
+          | map(.packages // [])
+          | add // [] )
+        | map(select((.default // .enabled // false) == true))
+      else
+        (
+          ( ($root.categories // []) | map(select((.id==$cat) or (.name==$cat))) | .[0]?.packages ) //
+          ( $root[$cat].packages // $root[$cat] // $root.packages // [] )
+        )
+      end
       | map({
           id: (.id // .name // .slug),
           label: ((.brew_type // .type // "cli") + " — " + (.description // "")),
@@ -62,7 +70,11 @@ select_packages_from_catalog() {
     tmpfile=$(mktemp -t catalog_selection.XXXXXX)
 
     local title
-    title="${category} Packages"
+    if [[ "$category" == "all" ]]; then
+        title="Default Packages"
+    else
+        title="${category} Packages"
+    fi
 
     dialog --clear \
            --title "$title" \

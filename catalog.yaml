@@ -65,15 +65,15 @@ categories:
       - id: postman
         brew_type: cask
         description: API development
-        default: false
+        default: true
       - id: fork
         brew_type: cask
         description: Git client
-        default: false
+        default: true
       - id: pre-commit
         brew_type: cli
         description: Git hook manager
-        default: false
+        default: true
       - id: git-delta
         brew_type: cli
         description: Git diff viewer
@@ -145,7 +145,7 @@ categories:
       - id: google-cloud-sdk
         brew_type: cask
         description: Google Cloud SDK
-        default: false
+        default: true
       - id: gcloud-cli
         brew_type: cli
         description: Google Cloud CLI
@@ -177,7 +177,7 @@ categories:
       - id: common-fate/granted/granted
         brew_type: cli
         description: AWS IAM credentials
-        default: false
+        default: true
       - id: lens
         brew_type: cask
         description: Kubernetes IDE
@@ -233,7 +233,7 @@ categories:
       - id: kitty
         brew_type: cask
         description: GPU terminal
-        default: false
+        default: true
       - id: warp
         brew_type: cask
         description: Modern terminal

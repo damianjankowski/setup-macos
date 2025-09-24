@@ -27,6 +27,9 @@ install_brew_packages() {
         log_error "Homebrew is not installed. Please install Homebrew first."
         return 1
     fi
+    if [[ $# -gt 0 ]]; then
+        packages="$*"
+    fi
     local total_packages=$(echo "$packages" | wc -w)
     local current_package=0
     
@@ -168,6 +171,10 @@ zap_uninstall_packages() {
 
 install_rosetta() {
     log_info "Installing Rosetta..."
+    if /usr/sbin/pkgutil --pkg-info com.apple.pkg.RosettaUpdateAuto >/dev/null 2>&1; then
+        log_info "Rosetta is already installed"; 
+        return 0
+    fi
     sudo softwareupdate --install-rosetta
     log_info "Rosetta installation completed"
 }
