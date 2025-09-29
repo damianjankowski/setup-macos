@@ -374,6 +374,10 @@ categories:
         brew_type: cask
         description: Window manager
         default: true
+      - id: font-meslo-lg-nerd-font    
+        brew_type: cask
+        description: Meslo LG Nerd font
+        default: false
 
   - id: communication
     name: Communication
