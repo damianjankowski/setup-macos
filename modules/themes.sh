@@ -145,6 +145,15 @@ install_starship_themes() {
     }
 }
 
+install_tmux_themes() {
+	log_info "Installing tmux themes..."
+
+	local tmux_config_dir=$(get_expanded_config "TMUX_CONFIG_DIR")
+	mkdir -p $tmux_theme_dir/plugins
+
+	git clone https://github.com/catppuccin/tmux.git ~/.config/tmux/plugins/catppuccin/tmux
+}
+
 install_all_themes() {
 	log_info "Installing all themes..."
 	install_bat_themes
@@ -168,7 +177,8 @@ show_themes_menu() {
     echo "4) Yazi themes"
     echo "5) delta theme"
     echo "6) starship theme"
-    echo "7) Install all"
+	echo "7) tmux theme"
+    echo "8) Install all"
     echo "0) Back"
     echo ""
 }
@@ -204,6 +214,10 @@ handle_themes_menu() {
                 wait_for_user
                 ;;
             7)
+                install_tmux_themes
+                wait_for_user
+                ;;
+            8)
                 install_all_themes
                 wait_for_user
                 ;;
