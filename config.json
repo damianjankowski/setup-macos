@@ -21,5 +21,6 @@
 	"BAT_CONFIG_DIR": "$HOME/.config/bat",
     "WARP_THEMES_DIR": "$HOME/.warp/themes",
     "YAZI_CONFIG_DIR": "$HOME/.config/yazi",
-    "STARSHIP_CONFIG_DIR": "$HOME/.config/"
+    "STARSHIP_CONFIG_DIR": "$HOME/.config/",
+    "TMUX_CONFIG_DIR": "$HOME/.config/tmux"
 }

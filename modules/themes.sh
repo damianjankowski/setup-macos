@@ -231,6 +231,10 @@ handle_themes_menu() {
                 wait_for_user
                 ;;
             8)
+                install_tmux_themes
+                wait_for_user
+                ;;
+            8)
                 install_all_themes
                 wait_for_user
                 ;;
