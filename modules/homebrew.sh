@@ -94,6 +94,7 @@ cleanup_homebrew() {
 
 show_installed() {
     brew list
+    wait_for_user
 }
 
 update_all_cli() {

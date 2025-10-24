@@ -7,6 +7,7 @@ show_package_manager_menu() {
     echo "└─────────────────────────────┘"
     echo ""
 	echo "1) Install all"
+	echo ""
     echo "Development"
     echo "2) Essentials"
     echo "3) Development Tools"
