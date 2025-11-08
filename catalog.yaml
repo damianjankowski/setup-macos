@@ -182,6 +182,10 @@ categories:
         brew_type: cask
         description: Kubernetes IDE
         default: false
+      - id: ekristen/tap/aws-nuke
+        brew_type: cli
+        description: AWS resource deleter
+        default: false
 
   - id: iac
     name: Infrastructure as Code
