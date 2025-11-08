@@ -430,6 +430,10 @@ categories:
         brew_type: cli
         description: AI model runner
         default: false
+      - id: opencode
+        brew_type: cli
+        description: AI model runner
+        default: false
 
   - id: tools
     name: General Tools

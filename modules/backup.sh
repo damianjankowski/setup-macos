@@ -136,7 +136,7 @@ restore_vscode_settings() {
 		fi
     fi
     
-    log_success "VS Code settings restored successfully"
+    log_info "VS Code settings restored successfully"
     return 0
 }
 
@@ -172,7 +172,7 @@ restore_cursor_settings() {
 		fi
     fi
     
-    log_success "Cursor AI settings restored successfully"
+    log_info "Cursor AI settings restored successfully"
     return 0
 }
 
@@ -202,7 +202,7 @@ restore_pycharm_settings() {
     [[ -d "$source_dir/plugins" ]] && cp -R "$source_dir/plugins" "$latest_pycharm_dir/"
     [[ -d "$source_dir/modules" ]] && cp -R "$source_dir/modules" "$latest_pycharm_dir/"
 
-	log_success "PyCharm settings restored successfully"
+	log_info "PyCharm settings restored successfully"
     return 0
 }
 

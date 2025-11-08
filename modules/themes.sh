@@ -148,10 +148,22 @@ install_starship_themes() {
 install_tmux_themes() {
 	log_info "Installing tmux themes..."
 
-	local tmux_config_dir=$(get_expanded_config "TMUX_CONFIG_DIR")
-	mkdir -p $tmux_theme_dir/plugins
-
-	git clone https://github.com/catppuccin/tmux.git ~/.config/tmux/plugins/catppuccin/tmux
+	local tmux_plugins_dir="$HOME/.config/tmux/plugins/catppuccin"
+	
+	if ! [[ -d "$tmux_plugins_dir" ]]; then
+		mkdir -p "$tmux_plugins_dir"
+	fi
+		
+	if ! [[ -d "$tmux_plugins_dir/tmux" ]]; then
+		git clone -b v2.1.3 https://github.com/catppuccin/tmux.git "$tmux_plugins_dir/tmux"
+	fi
+	
+	{
+		log_info "Catppuccin tmux theme installed successfully!"
+		echo "run ~/.config/tmux/plugins/catppuccin/tmux/catppuccin.tmux" >> "$HOME/.tmux.conf"
+		log_info "Configuration added to ~/.tmux.conf"
+		log_info "Reload tmux with: tmux source ~/.tmux.conf"
+	} || log_error "Failed to install tmux themes"
 }
 
 install_all_themes() {
@@ -162,6 +174,7 @@ install_all_themes() {
 	install_yazi_themes
 	install_delta_themes
 	install_starship_themes
+	install_tmux_themes
 	log_info "All themes installation completed!"
 }
 
@@ -177,7 +190,7 @@ show_themes_menu() {
     echo "4) Yazi themes"
     echo "5) delta theme"
     echo "6) starship theme"
-	echo "7) tmux theme"
+    echo "7) tmux themes"
     echo "8) Install all"
     echo "0) Back"
     echo ""
@@ -186,7 +199,7 @@ show_themes_menu() {
 handle_themes_menu() {
     while true; do
         show_themes_menu
-        read -p "Choice [0-7]: " choice
+        read -p "Choice [0-8]: " choice
         
         case $choice in
             1)
@@ -218,6 +231,10 @@ handle_themes_menu() {
                 wait_for_user
                 ;;
             8)
+                install_tmux_themes
+                wait_for_user
+                ;;
+            8)
                 install_all_themes
                 wait_for_user
                 ;;
@@ -235,4 +252,4 @@ themes_tools() {
     handle_themes_menu
 }
 
-export -f install_bat_themes install_kitty_themes install_warp_themes install_yazi_themes install_delta_themes install_starship_themes install_all_themes show_themes_menu handle_themes_menu themes_tools
+export -f install_bat_themes install_kitty_themes install_warp_themes install_yazi_themes install_delta_themes install_starship_themes install_tmux_themes install_all_themes show_themes_menu handle_themes_menu themes_tools
