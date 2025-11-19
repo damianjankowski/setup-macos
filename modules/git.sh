@@ -182,8 +182,8 @@ setup_work_git_config() {
     log_info "Setting up work git configuration..."
     
     if [ -f ~/.gitconfig ]; then
-        log_info "Backing up existing .gitconfig-work to .gitconfig-work.backup"
-        cp ~/.gitconfig-work ~/.gitconfig-work.backup
+        log_info "Backing up existing .gitconfig to .gitconfig.backup"
+        cp ~/.gitconfig ~/.gitconfig.backup
     fi
 
 	if [ -f ~/.gitconfig-work ]; then

@@ -15,7 +15,17 @@ get_hostname() {
 set_hostname() {
     get_hostname
     current_hostname=$(scutil --get HostName)
-    local desired_hostname=$(get_expanded_env "HOSTNAME")
+    local desired_hostname
+
+    if ! desired_hostname=$(get_expanded_env "HOSTNAME"); then
+        log_error "HOSTNAME variable is not defined in your environment file."
+        return 1
+    fi
+
+    if [[ -z "$desired_hostname" ]]; then
+        log_error "HOSTNAME variable is empty. Please set a valid value in your environment file."
+        return 1
+    fi
     
     if [[ "$current_hostname" == "$desired_hostname" ]]; then
         log_info "Hostname is already set to $current_hostname"

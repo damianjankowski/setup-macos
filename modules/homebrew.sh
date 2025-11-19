@@ -107,8 +107,6 @@ update_all_cli() {
 
     log_info "Found $outdated_packages CLI packages to update"
 
-    brew upgrade
-    
     if brew upgrade; then
         progress_bar $outdated_packages $outdated_packages  # 100%
         log_info "CLI packages update completed successfully"
@@ -129,8 +127,6 @@ update_all_cask() {
     fi
 
     log_info "Found $outdated_packages cask packages to update"
-
-    brew upgrade --cask
 
     if brew upgrade --cask; then
         progress_bar $outdated_packages $outdated_packages  # 100%
