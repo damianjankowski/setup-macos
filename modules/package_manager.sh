@@ -118,4 +118,31 @@ package_manager() {
     handle_package_manager_menu
 }
 
-export -f package_manager cleanup_homebrew zap_uninstall_packages show_package_manager_menu handle_package_manager_menu
+install_packages() {
+    local packages="$*"
+    local total_packages=$(echo "$packages" | wc -w)
+    local current_package=0
+    
+    log_info "Installing $total_packages packages..."
+    
+    for package in $packages; do
+        current_package=$((current_package + 1))
+        
+        if [[ "$package" == pipx:* ]]; then
+            local real_package="${package#pipx:}"
+            log_info "[$current_package/$total_packages] Installing $real_package (pipx)..."
+            install_pipx_package "$real_package"
+        else
+            log_info "[$current_package/$total_packages] Installing $package (brew)..."
+            if brew install "$package"; then
+                log_info "✓ $package installed successfully"
+            else
+                log_error "✗ Failed to install $package"
+            fi
+        fi
+    done
+    
+    wait_for_user
+}
+
+export -f package_manager cleanup_homebrew zap_uninstall_packages show_package_manager_menu handle_package_manager_menu install_packages

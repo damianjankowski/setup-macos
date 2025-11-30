@@ -75,7 +75,7 @@ categories:
         description: Git client
         default: true
       - id: pre-commit
-        brew_type: cli
+        type: pipx
         description: Git hook manager
         default: true
       - id: git-delta
@@ -215,7 +215,7 @@ categories:
         description: FinOps tool
         default: false
       - id: ansible
-        brew_type: cli
+        type: pipx
         description: Configuration as code
         default: false
 

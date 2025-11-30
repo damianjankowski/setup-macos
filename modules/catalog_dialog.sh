@@ -19,7 +19,7 @@ _build_checklist_tsv() {
         )
       end
       | map({
-          id: (.id // .name // .slug),
+          id: (if (.type == "pipx") then "pipx:" + (.id // .name // .slug) else (.id // .name // .slug) end),
           label: ((.brew_type // .type // "cli") + " — " + (.description // "")),
           status: (if (.default // .enabled // false) then "on" else "off" end)
         })
@@ -107,7 +107,7 @@ select_packages_from_catalog() {
     packages="$selection"
 
     log_info "Selected packages: $packages"
-    install_brew_packages $packages
+    install_packages $packages
 }
 
 export -f select_packages_from_catalog
