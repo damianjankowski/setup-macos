@@ -1,0 +1,452 @@
+categories:
+  - id: essentials
+    name: Essentials
+    packages:
+      - id: git
+        brew_type: cli
+        description: Version control
+        default: true
+      - id: curl
+        brew_type: cli
+        description: Data transfer tool
+        default: true
+      - id: wget
+        brew_type: cli
+        description: File retriever
+        default: true
+      - id: dialog
+        brew_type: cli
+        description: Dialog boxes
+        default: true
+      - id: yq
+        brew_type: cli
+        description: YAML processor
+        default: true
+      - id: jq
+        brew_type: cli
+        description: JSON processor
+        default: true
+
+  - id: development
+    name: Development
+    packages:
+      - id: antigravity
+        brew_type: cask
+        description: Google AI code editor
+        default: true
+      - id: visual-studio-code
+        brew_type: cask
+        description: VS Code editor
+        default: true
+      - id: cursor
+        brew_type: cask
+        description: AI code editor
+        default: true
+      - id: neovim
+        brew_type: cli
+        description: Modern Vim editor
+        default: false
+      - id: nvm
+        brew_type: cli
+        description: Node.js version manager
+        default: false
+      - id: pyenv
+        brew_type: cli
+        description: Python version manager
+        default: true
+      - id: pyenv-virtualenv
+        brew_type: cli
+        description: Python virtual environment manager
+        default: false
+      - id: pipx
+        brew_type: cli
+        description: Python app installer
+        default: true
+      - id: goenv
+        brew_type: cli
+        description: Go version manager
+        default: false
+      - id: postman
+        brew_type: cask
+        description: API development
+        default: true
+      - id: fork
+        brew_type: cask
+        description: Git client
+        default: true
+      - id: pre-commit
+        brew_type: cli
+        description: Git hook manager
+        default: true
+      - id: git-delta
+        brew_type: cli
+        description: Git diff viewer
+        default: true
+      - id: dbeaver-community
+        brew_type: cask
+        description: Database client
+        default: false
+
+  - id: jetbrains
+    name: JetBrains IDEs
+    packages:
+      - id: pycharm
+        brew_type: cask
+        description: Python IDE
+        default: true
+      - id: pycharm-ce
+        brew_type: cask
+        description: Python Community IDE
+        default: false
+      - id: intellij-idea
+        brew_type: cask
+        description: Java IDE
+        default: false
+      - id: intellij-idea-ce
+        brew_type: cask
+        description: Java Community Edition
+        default: false
+      - id: goland
+        brew_type: cask
+        description: Go IDE
+        default: false
+      - id: rubymine
+        brew_type: cask
+        description: Ruby IDE
+        default: false
+      - id: webstorm
+        brew_type: cask
+        description: Web development
+        default: false
+      - id: datagrip
+        brew_type: cask
+        description: Database IDE
+        default: false
+      - id: clion
+        brew_type: cask
+        description: C/C++ IDE
+        default: false
+      - id: resharper
+        brew_type: cask
+        description: C# IDE
+        default: false
+      - id: rustrover
+        brew_type: cask
+        description: Rust IDE
+        default: false
+      - id: rider
+        brew_type: cask
+        description: C# IDE
+        default: false
+
+  - id: cloud
+    name: Cloud Tools
+    packages:
+      - id: awscli
+        brew_type: cli
+        description: AWS CLI
+        default: true
+      - id: google-cloud-sdk
+        brew_type: cask
+        description: Google Cloud SDK
+        default: true
+      - id: gcloud-cli
+        brew_type: cli
+        description: Google Cloud CLI
+        default: false
+      - id: azure-cli
+        brew_type: cli
+        description: Azure CLI
+        default: false
+      - id: kubernetes-cli
+        brew_type: cli
+        description: kubectl
+        default: true
+      - id: helm
+        brew_type: cli
+        description: Kubernetes package manager
+        default: true
+      - id: k9s
+        brew_type: cli
+        description: Kubernetes cluster management
+        default: true
+      - id: aws-vpn-client
+        brew_type: cask
+        description: AWS VPN client
+        default: false
+      - id: argocd
+        brew_type: cli
+        description: ArgoCD
+        default: false
+      - id: common-fate/granted/granted
+        brew_type: cli
+        description: AWS IAM credentials
+        default: true
+      - id: lens
+        brew_type: cask
+        description: Kubernetes IDE
+        default: false
+      - id: ekristen/tap/aws-nuke
+        brew_type: cli
+        description: AWS resource deleter
+        default: false
+
+  - id: iac
+    name: Infrastructure as Code
+    packages:
+      - id: terraformer
+        brew_type: cli
+        description: Terraform state to code
+        default: false
+      - id: tfenv
+        brew_type: cli
+        description: Terraform version manager
+        default: true
+      - id: terraform
+        brew_type: cli
+        description: Infrastructure as code
+        default: false
+      - id: tflint
+        brew_type: cli
+        description: Terraform linter
+        default: true
+      - id: infracost
+        brew_type: cli
+        description: FinOps tool
+        default: false
+      - id: ansible
+        brew_type: cli
+        description: Configuration as code
+        default: false
+
+  - id: container
+    name: Container Tools
+    packages:
+      - id: docker
+        brew_type: cask
+        description: Container platform
+        default: true
+      - id: ctop
+        brew_type: cli
+        description: Container monitoring
+        default: false
+      - id: orbstack
+        brew_type: cask
+        description: Docker alternative
+        default: false
+
+  - id: terminal
+    name: Terminal Emulators
+    packages:
+      - id: iterm2
+        brew_type: cask
+        description: Terminal emulator
+        default: false
+      - id: kitty
+        brew_type: cask
+        description: GPU terminal
+        default: true
+      - id: warp
+        brew_type: cask
+        description: Modern terminal
+        default: false
+      - id: tmux
+        brew_type: cli
+        description: Terminal multiplexer
+        default: false
+      - id: ghostty
+        brew_type: cask
+        description: Terminal emulator
+        default: false
+
+  - id: terminal-utils
+    name: Terminal Utilities
+    packages:
+      - id: zsh-syntax-highlighting
+        brew_type: cli
+        description: Zsh syntax highlighting
+        default: true
+      - id: zsh-autosuggestions
+        brew_type: cli
+        description: Zsh autosuggestions
+        default: true
+      - id: zsh
+        brew_type: cli
+        description: Zsh shell
+        default: true
+      - id: 1password-cli
+        brew_type: cli
+        description: 1Password CLI
+        default: true
+      - id: eza
+        brew_type: cli
+        description: Modern ls
+        default: true
+      - id: bat
+        brew_type: cli
+        description: Cat with syntax highlighting
+        default: true
+      - id: tldr
+        brew_type: cli
+        description: Simplified man pages
+        default: true
+      - id: fzf
+        brew_type: cli
+        description: Fuzzy finder
+        default: true
+      - id: htop
+        brew_type: cli
+        description: Process viewer
+        default: true
+      - id: starship
+        brew_type: cli
+        description: Cross-shell prompt
+        default: true
+      - id: powerlevel10k
+        brew_type: cli
+        description: Powerlevel10k
+        default: false
+      - id: fd
+        brew_type: cli
+        description: Fast file finder
+        default: true
+      - id: ripgrep
+        brew_type: cli
+        description: Fast grep
+        default: true
+      - id: grep
+        brew_type: cli
+        description: Grep
+        default: true
+      - id: zoxide
+        brew_type: cli
+        description: Fast cd
+        default: false
+      - id: fish
+        brew_type: cli
+        description: Fish shell
+        default: false
+      - id: kubecolor
+        brew_type: cli
+        description: Kubernetes color output
+        default: true
+      - id: yazi
+        brew_type: cli
+        description: File manager
+        default: true
+      - id: thefuck
+        brew_type: cli
+        description: Command line tool to fix mistakes
+        default: true
+      - id: tree
+        brew_type: cli
+        description: Tree view of directory structure
+        default: true
+      - id: fastfetch
+        brew_type: cli
+        description: System information
+        default: true
+      - id: chezmoi
+        brew_type: cli
+        description: Configuration management
+        default: true
+
+  - id: system
+    name: System Tools
+    packages:
+      - id: rectangle
+        brew_type: cask
+        description: Window manager
+        default: false
+      - id: stats
+        brew_type: cask
+        description: System monitor
+        default: false
+      - id: raycast
+        brew_type: cask
+        description: Launcher
+        default: false
+      - id: lunar
+        brew_type: cask
+        description: Brightness control
+        default: false
+      - id: karabiner-elements
+        brew_type: cask
+        description: Keyboard customizer
+        default: false
+      - id: nikitabobko/tap/aerospace
+        brew_type: cask
+        description: Window manager
+        default: true
+      - id: font-meslo-lg-nerd-font
+        brew_type: cask
+        description: Meslo LG Nerd font
+        default: false
+
+  - id: communication
+    name: Communication
+    packages:
+      - id: slack
+        brew_type: cask
+        description: Team chat
+        default: false
+      - id: discord
+        brew_type: cask
+        description: Voice chat
+        default: false
+      - id: spotify
+        brew_type: cask
+        description: Music streaming
+        default: false
+
+  - id: ai
+    name: AI Tools
+    packages:
+      - id: ollama
+        brew_type: cli
+        description: AI model runner
+        default: false
+      - id: lm-studio
+        brew_type: cask
+        description: AI model runner
+        default: false
+      - id: claude
+        brew_type: cask
+        description: AI
+        default: false
+      - id: chatgpt
+        brew_type: cask
+        description: AI
+        default: false
+      - id: gemini-cli
+        brew_type: cli
+        description: AI model runner
+        default: false
+      - id: cursor-cli
+        brew_type: cli
+        description: AI model runner
+        default: false
+      - id: claude-cli
+        brew_type: cli
+        description: AI model runner
+        default: false
+      - id: opencode
+        brew_type: cli
+        description: AI model runner
+        default: false
+
+  - id: tools
+    name: General Tools
+    packages:
+      - id: garmin-express
+        brew_type: cask
+        description: Garmin Connect
+        default: true
+      - id: obsidian
+        brew_type: cask
+        description: Note taking
+        default: false
+      - id: notion
+        brew_type: cask
+        description: Note taking
+        default: false
