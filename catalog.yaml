@@ -162,6 +162,14 @@ categories:
         brew_type: cli
         description: kubectl
         default: true
+      - id: kubecm
+        brew_type: cli
+        description: manage kubeconfig
+        default: false
+      - id: kubectx
+        brew_type: cli
+        description: manage kubectl context
+        default: false
       - id: helm
         brew_type: cli
         description: Kubernetes package manager
