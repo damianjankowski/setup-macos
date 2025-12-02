@@ -1,7 +1,7 @@
 #!/bin/bash
 
 init_ide_backup_dir() {
-    local timestamp=$(date +"%Y%m%d_%H%M%S")
+    local timestamp=$(date +"%Y%m%d")
     local backup_dir=$(get_expanded_config "BACKUP_DIR")/configs/$timestamp
     mkdir -p "$backup_dir"
     echo "$backup_dir"
@@ -67,6 +67,34 @@ backup_vscode_settings() {
     code --list-extensions > "$vscode_backup_dir/extensions.txt"
     
     [[ -z "$1" ]] && log_info "VS Code settings backed up to: ./configs/$(basename "$backup_dir")/vscode"
+    return 0
+}
+
+backup_antigravity_settings() {
+    log_info "Backing up Google Antigravity settings..."
+    
+    local backup_dir="${1:-$(init_ide_backup_dir)}"
+    local antigravity_backup_dir="$backup_dir/antigravity"
+    local antigravity_config_dir=$(get_expanded_config "ANTIGRAVITY_CONFIG_DIR")
+
+    if [[ ! -d "$antigravity_config_dir" ]]; then
+        log_warn "Google Antigravity config directory not found: $antigravity_config_dir"
+        return 1
+    fi
+    
+    mkdir -p "$antigravity_backup_dir"
+    
+    [[ -f "$antigravity_config_dir/settings.json" ]] && cp "$antigravity_config_dir/settings.json" "$antigravity_backup_dir/"
+    [[ -f "$antigravity_config_dir/keybindings.json" ]] && cp "$antigravity_config_dir/keybindings.json" "$antigravity_backup_dir/"
+    [[ -f "$antigravity_config_dir/tasks.json" ]] && cp "$antigravity_config_dir/tasks.json" "$antigravity_backup_dir/"
+    [[ -f "$antigravity_config_dir/launch.json" ]] && cp "$antigravity_config_dir/launch.json" "$antigravity_backup_dir/"
+    
+    [[ -d "$antigravity_config_dir/snippets" ]] && cp -R "$antigravity_config_dir/snippets" "$antigravity_backup_dir/"
+    
+    require_tool agy
+    agy --list-extensions > "$antigravity_backup_dir/extensions.txt"
+    
+    [[ -z "$1" ]] && log_info "Google Antigravity settings backed up to: ./configs/$(basename "$backup_dir")/antigravity"
     return 0
 }
 
@@ -206,6 +234,42 @@ restore_pycharm_settings() {
     return 0
 }
 
+restore_antigravity_settings() {
+	choose_backup_dir
+	backup_dir=$(ask_for_input "Enter the backup directory: ")
+    local source_dir=$(get_expanded_config "BACKUP_DIR")/configs/$backup_dir/antigravity
+	local antigravity_config_dir=$(get_expanded_config "ANTIGRAVITY_CONFIG_DIR")
+    
+    if [[ ! -d "$source_dir" ]]; then
+        log_error "Source directory not found: $source_dir"
+        return 1
+    fi
+    
+    log_info "Restoring Google Antigravity settings from: $source_dir"
+    
+    mkdir -p "$antigravity_config_dir"
+    
+    [[ -f "$source_dir/settings.json" ]] && cp "$source_dir/settings.json" "$antigravity_config_dir/"
+    [[ -f "$source_dir/keybindings.json" ]] && cp "$source_dir/keybindings.json" "$antigravity_config_dir/"
+    [[ -f "$source_dir/tasks.json" ]] && cp "$source_dir/tasks.json" "$antigravity_config_dir/"
+    [[ -f "$source_dir/launch.json" ]] && cp "$source_dir/launch.json" "$antigravity_config_dir/"
+    
+    [[ -d "$source_dir/snippets" ]] && cp -R "$source_dir/snippets" "$antigravity_config_dir/"
+    
+    if [[ -f "$source_dir/extensions.txt" ]] && require_tool agy; then
+		ask_for_confirmation "Do you want to install Google Antigravity extensions?"
+		if [[ $? -eq 0 ]]; then
+        	log_info "Installing Google Antigravity extensions..."
+        	while IFS= read -r extension; do
+            	[[ -n "$extension" ]] && agy --install-extension "$extension" --force 2>/dev/null || true
+        	done < "$source_dir/extensions.txt"
+		fi
+    fi
+    
+    log_info "Google Antigravity settings restored successfully"
+    return 0
+}
+
 backup_all_settings() {
 	backup_pycharm_settings
 	backup_vscode_settings
@@ -227,12 +291,14 @@ show_backup_menu() {
     echo "1) Backup pycharm configuration"
     echo "2) Backup vscode configuration"
     echo "3) Backup cursor configuration"
+    echo "4) Backup antigravity configuration"
     echo ""
-	echo "4) Restore pycharm configuration"
-	echo "5) Restore vscode configuration"
-	echo "6) Restore cursor configuration"
-	echo "7) Backup all configurations"
-	echo "8) Restore all configurations"
+	echo "5) Restore pycharm configuration"
+	echo "6) Restore vscode configuration"
+	echo "7) Restore cursor configuration"
+    echo "8) Restore antigravity configuration"
+	echo "9) Backup all configurations"
+	echo "10) Restore all configurations"
     echo "0) Back"
     echo ""
 }
@@ -256,22 +322,30 @@ handle_backup_menu() {
                 wait_for_user
                 ;;
             4)
-                restore_pycharm_settings
+                backup_antigravity_settings
                 wait_for_user
                 ;;
             5)
-                restore_vscode_settings
+                restore_pycharm_settings
                 wait_for_user
                 ;;
             6)
+                restore_vscode_settings
+                wait_for_user
+                ;;
+            7)
                 restore_cursor_settings
                 wait_for_user
                 ;;
-			7)
+			8)
+				restore_antigravity_settings
+				wait_for_user
+				;;
+			9)
 				backup_all_settings
 				wait_for_user
 				;;
-			8)
+			10)
 				restore_all_settings
 				wait_for_user
 				;;
@@ -290,5 +364,5 @@ backup_tools() {
     handle_backup_menu
 }
 
-export -f backup_pycharm_settings backup_vscode_settings backup_cursor_settings restore_pycharm_settings restore_vscode_settings restore_cursor_settings backup_all_settings restore_all_settings choose_backup_dir show_backup_menu handle_backup_menu backup_tools
+export -f backup_pycharm_settings backup_vscode_settings backup_cursor_settings backup_antigravity_settings restore_pycharm_settings restore_vscode_settings restore_cursor_settings restore_antigravity_settings backup_all_settings restore_all_settings choose_backup_dir show_backup_menu handle_backup_menu backup_tools
 	
