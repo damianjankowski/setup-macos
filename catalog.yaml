@@ -82,6 +82,10 @@ categories:
         brew_type: cli
         description: Git diff viewer
         default: true
+      - id: lazygit
+        brew_type: cli
+        description: Git terminal UI
+        default: false
       - id: dbeaver-community
         brew_type: cask
         description: Database client
@@ -230,7 +234,7 @@ categories:
   - id: container
     name: Container Tools
     packages:
-      - id: docker
+      - id: docker-desktop
         brew_type: cask
         description: Container platform
         default: true
@@ -294,7 +298,7 @@ categories:
         brew_type: cli
         description: Cat with syntax highlighting
         default: true
-      - id: tldr
+      - id: tlrc
         brew_type: cli
         description: Simplified man pages
         default: true
@@ -362,6 +366,10 @@ categories:
   - id: system
     name: System Tools
     packages:
+      - id: appcleaner
+        brew_type: cask
+        description: App uninstaller
+        default: true
       - id: rectangle
         brew_type: cask
         description: Window manager
@@ -401,6 +409,10 @@ categories:
       - id: discord
         brew_type: cask
         description: Voice chat
+        default: false
+      - id: zoom
+        brew_type: cask
+        description: Video conferencing
         default: false
       - id: spotify
         brew_type: cask
