@@ -306,7 +306,7 @@ show_backup_menu() {
 handle_backup_menu() {
     while true; do
         show_backup_menu
-        read -p "Choice [0-8]: " choice
+        read -p "Choice [0-10]: " choice
         
         case $choice in
             1)

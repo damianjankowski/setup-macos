@@ -1,5 +1,7 @@
 #!/bin/bash
 
+readonly VERSION="2.1.0"
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 source "$SCRIPT_DIR/lib/logging.sh"
@@ -28,7 +30,7 @@ get_system_info() {
 show_main_menu() {
     clear
     echo "┌─────────────────────────────┐"
-    echo "│     macOS Setup v2.1.0     │"
+    echo "│     macOS Setup v${VERSION}     │"
     echo "└─────────────────────────────┘"
     echo ""
     echo "System: $(get_system_info)"
@@ -49,11 +51,11 @@ show_main_menu() {
 }
 
 main_menu() {
-    parse_config
-    parse_env
+    parse_config || true
+    parse_env || true
     while true; do
         show_main_menu
-        read -p "Choice [0-13]: " choice
+        read -p "Choice [0-9]: " choice
         
         case $choice in
             1) install_essentials
@@ -105,7 +107,7 @@ install_essentials() {
         return 1
     fi
     
-    local essential_packages="git curl wget dialog htop yq"
+    local essential_packages="git curl wget dialog yq"
     
     log_info "Installing packages: $essential_packages"
 
@@ -120,7 +122,7 @@ install_essentials() {
 }
 
 main() {
-    log_info "Starting macOS Setup v2.1.0"
+    log_info "Starting macOS Setup v${VERSION}"
     main_menu
 }
 

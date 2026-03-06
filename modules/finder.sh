@@ -159,9 +159,7 @@ show_all_filename_extensions() {
 
 
 main() {
-    if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-        configure_finder_dialog
-    fi
+    configure_finder_dialog
 }
 
 export -f configure_finder_dialog
@@ -177,6 +175,8 @@ export -f search_current_folder_default
 export -f disable_extension_warning
 export -f show_all_filename_extensions
 
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi
 
 

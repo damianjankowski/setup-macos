@@ -49,9 +49,6 @@ get_detailed_storage_info() {
     log_info "Info about current volume:"
     diskutil info /
     echo ""
-    log_info "Info about current volume:"
-    diskutil info /
-    echo ""
     log_info "APFS containers/volumes:"
     diskutil apfs list
     echo ""

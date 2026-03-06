@@ -59,19 +59,14 @@ parse_env() {
     fi
 
     if [[ ! -f "$env_file" ]]; then
-        log_error "Env file not found: $env_file"
-        return 1
-    fi
-    if [[ -f "$env_file" ]]; then
-        set -a
-        source "$env_file"
-        set +a
-        log_info "Environment variables loaded from: $env_file"
+        log_warn ".env file not found ($env_file) — features requiring personal config (git identity, hostname) will be unavailable"
         return 0
-    else
-        log_error "Failed to load environment file: $env_file"
-        return 1
     fi
+    set -a
+    source "$env_file"
+    set +a
+    log_info "Environment variables loaded from: $env_file"
+    return 0
 }
 
 get_env_value() {
@@ -81,8 +76,7 @@ get_env_value() {
         log_error "Variable name is required"
         return 1
     fi
-    local value
-    eval "value=\$$var_name"
+    local value="${!var_name}"
     
     if [[ -z "$value" ]]; then
         log_error "Environment variable not found: $var_name"

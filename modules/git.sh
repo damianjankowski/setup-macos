@@ -1,8 +1,12 @@
+#!/bin/bash
+
 basic_git_config() {
 	parse_env
-	PERSONAL_NAME=$(get_env_value "PERSONAL_NAME")
-	PERSONAL_EMAIL=$(get_env_value "PERSONAL_EMAIL")
-	
+	if ! PERSONAL_NAME=$(get_env_value "PERSONAL_NAME") || ! PERSONAL_EMAIL=$(get_env_value "PERSONAL_EMAIL"); then
+		log_error "PERSONAL_NAME and PERSONAL_EMAIL must be set in .env to configure git identity"
+		return 1
+	fi
+
 	log_info "Retrieved PERSONAL_NAME: '$PERSONAL_NAME'"
 	log_info "Retrieved PERSONAL_EMAIL: '$PERSONAL_EMAIL'"
 	
@@ -62,11 +66,16 @@ EOF
 
 work_git_config() {
 	parse_env
-	WORK_NAME=$(get_env_value "WORK_NAME")
-	WORK_EMAIL=$(get_env_value "WORK_EMAIL")
-	
+	if ! WORK_NAME=$(get_env_value "WORK_NAME") || ! WORK_EMAIL=$(get_env_value "WORK_EMAIL") || \
+	   ! PERSONAL_NAME=$(get_env_value "PERSONAL_NAME") || ! PERSONAL_EMAIL=$(get_env_value "PERSONAL_EMAIL"); then
+		log_error "WORK_NAME, WORK_EMAIL, PERSONAL_NAME and PERSONAL_EMAIL must be set in .env to configure git identity"
+		return 1
+	fi
+
 	log_info "Retrieved WORK_NAME: '$WORK_NAME'"
 	log_info "Retrieved WORK_EMAIL: '$WORK_EMAIL'"
+	log_info "Retrieved PERSONAL_NAME: '$PERSONAL_NAME'"
+	log_info "Retrieved PERSONAL_EMAIL: '$PERSONAL_EMAIL'"
     
     cat > ~/.gitconfig << EOF
 [user]

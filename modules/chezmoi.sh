@@ -39,10 +39,6 @@ add_aerospace_config() {
     chezmoi_add $(get_expanded_config "AEROSPACE_CONFIG_DIR")
 }
 
-apply_kitty_config() {
-    chezmoi_apply $(get_expanded_config "KITTY_CONFIG_DIR")
-}
-
 show_chezmoi_menu() {
     clear
     echo "┌─────────────────────────────┐"
@@ -105,4 +101,4 @@ chezmoi_tools() {
     handle_chezmoi_menu
 }
 
-export -f chezmoi_add chezmoi_apply add_kitty_config add_warp_config add_yazi_config add_delta_config add_aerospace_config apply_kitty_config show_chezmoi_menu handle_chezmoi_menu chezmoi_tools
+export -f chezmoi_add chezmoi_apply add_kitty_config add_warp_config add_yazi_config add_delta_config add_aerospace_config show_chezmoi_menu handle_chezmoi_menu chezmoi_tools

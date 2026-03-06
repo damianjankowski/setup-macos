@@ -46,43 +46,43 @@ handle_package_manager_menu() {
         
         case $choice in
 		1)  # Install all
-			select_packages_from_catalog "all" "./catalog.yaml"
+			select_packages_from_catalog "all" "$SCRIPT_DIR/catalog.yaml"
 			;;
 		2)  # Essentials
-			select_packages_from_catalog "essentials" "./catalog.yaml"
+			select_packages_from_catalog "essentials" "$SCRIPT_DIR/catalog.yaml"
 			;;
 		3)  # Development Tools
-			select_packages_from_catalog "development" "./catalog.yaml"
+			select_packages_from_catalog "development" "$SCRIPT_DIR/catalog.yaml"
 			;;
 		4)  # JetBrains IDEs
-			select_packages_from_catalog "jetbrains" "./catalog.yaml"
+			select_packages_from_catalog "jetbrains" "$SCRIPT_DIR/catalog.yaml"
 			;;
 		5)  # AI Tools
-			select_packages_from_catalog "ai" "./catalog.yaml"
+			select_packages_from_catalog "ai" "$SCRIPT_DIR/catalog.yaml"
 			;;
 		6)  # Cloud Tools
-			select_packages_from_catalog "cloud" "./catalog.yaml"
+			select_packages_from_catalog "cloud" "$SCRIPT_DIR/catalog.yaml"
 			;;
 		7)  # Infrastructure as Code
-			select_packages_from_catalog "iac" "./catalog.yaml"
+			select_packages_from_catalog "iac" "$SCRIPT_DIR/catalog.yaml"
 			;;
 		8)  # Container Tools
-			select_packages_from_catalog "container" "./catalog.yaml"
+			select_packages_from_catalog "container" "$SCRIPT_DIR/catalog.yaml"
 			;;
 		9)  # Terminal Emulators
-			select_packages_from_catalog "terminal" "./catalog.yaml"
+			select_packages_from_catalog "terminal" "$SCRIPT_DIR/catalog.yaml"
 			;;
 		10) # Terminal Utilities
-			select_packages_from_catalog "terminal-utils" "./catalog.yaml"
+			select_packages_from_catalog "terminal-utils" "$SCRIPT_DIR/catalog.yaml"
 			;;
 		11) # System Tools
-			select_packages_from_catalog "system" "./catalog.yaml"
+			select_packages_from_catalog "system" "$SCRIPT_DIR/catalog.yaml"
 			;;
 		12) # Communication
-			select_packages_from_catalog "communication" "./catalog.yaml"
+			select_packages_from_catalog "communication" "$SCRIPT_DIR/catalog.yaml"
 			;;
 		13) # General Tools
-			select_packages_from_catalog "tools" "./catalog.yaml"
+			select_packages_from_catalog "tools" "$SCRIPT_DIR/catalog.yaml"
 			;;
 		14)
 			show_installed

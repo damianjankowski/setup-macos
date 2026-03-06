@@ -70,8 +70,4 @@ log_error() {
     log_message $LOG_LEVEL_ERROR "$1" "$LOG_COLOR_ERROR"
 }
 
-log_blue() {
-    log_message $LOG_LEVEL_BLUE "$1" "$LOG_COLOR_BLUE"
-}
-
 export -f log_debug log_info log_warn log_error get_timestamp log_message

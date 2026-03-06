@@ -27,9 +27,7 @@ install_brew_packages() {
         log_error "Homebrew is not installed. Please install Homebrew first."
         return 1
     fi
-    if [[ $# -gt 0 ]]; then
-        packages="$*"
-    fi
+    local packages="$*"
     local total_packages=$(echo "$packages" | wc -w)
     local current_package=0
     
@@ -83,7 +81,7 @@ get_homebrew_status() {
 cleanup_homebrew() {
     log_info "Cleaning up Homebrew..."
     if require_tool brew; then
-		ask_for_confirmation "Are you sure you want to cleanup Homebrew?"
+		ask_for_confirmation "Are you sure you want to cleanup Homebrew?" || return 0
         brew cleanup
         log_info "Homebrew cleanup completed"
     else
@@ -143,7 +141,7 @@ update_all_cask() {
 zap_uninstall_packages() {
     brew list
     packages=$(ask_for_input "Enter the packages to zap uninstall (separated by spaces)")
-    ask_for_confirmation "Are you sure you want to zap uninstall packages?"
+    ask_for_confirmation "Are you sure you want to zap uninstall packages?" || return 0
 	local original_packages=$(brew list)
 	if brew uninstall --zap $packages; then
 		local current_packages=$(brew list)

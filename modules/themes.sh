@@ -90,7 +90,7 @@ install_yazi_themes() {
 		echo "  - $theme"
 	done
 	local input
-	ask_for_input "Choose a theme category (latte/frappe/macchiato/mocha) [default: mocha]: " input
+	input=$(ask_for_input "Choose a theme category (latte/frappe/macchiato/mocha) [default: mocha]")
 	input=${input:-mocha}
 	if [[ ! " ${themes[@]} " =~ " ${input} " ]]; then
 		log_error "Invalid theme category: $input"
@@ -116,7 +116,7 @@ install_yazi_themes() {
 }
 
 install_delta_themes() {
-    if require_tool delta; then
+    if ! require_tool delta; then
         log_error "delta not found. Is delta installed?"
         return 1
     fi
@@ -227,10 +227,6 @@ handle_themes_menu() {
                 wait_for_user
                 ;;
             7)
-                install_tmux_themes
-                wait_for_user
-                ;;
-            8)
                 install_tmux_themes
                 wait_for_user
                 ;;

@@ -64,7 +64,7 @@ show_system_menu() {
 handle_system_menu() {
     while true; do
         show_system_menu
-        read -p "Choice [0-1]: " choice
+        read -p "Choice [0-3]: " choice
         
         case $choice in
             1)

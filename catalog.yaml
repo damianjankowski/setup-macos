@@ -338,10 +338,14 @@ categories:
         brew_type: cli
         description: Fuzzy finder
         default: true
+      - id: btop
+        brew_type: cli
+        description: Process viewer with graphs
+        default: true
       - id: htop
         brew_type: cli
         description: Process viewer
-        default: true
+        default: false
       - id: starship
         brew_type: cli
         description: Cross-shell prompt
