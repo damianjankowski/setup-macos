@@ -62,6 +62,14 @@ categories:
         brew_type: cli
         description: Python app installer
         default: true
+      - id: mise
+        brew_type: cli
+        description: Polyglot runtime manager
+        default: true
+      - id: direnv
+        brew_type: cli
+        description: Per-directory environment variables
+        default: false
       - id: goenv
         brew_type: cli
         description: Go version manager
@@ -85,6 +93,14 @@ categories:
       - id: lazygit
         brew_type: cli
         description: Git terminal UI
+        default: false
+      - id: glab
+        brew_type: cli
+        description: GitLab CLI
+        default: false
+      - id: gh
+        brew_type: cli
+        description: GitHub CLI
         default: false
       - id: dbeaver-community
         brew_type: cask
@@ -190,6 +206,10 @@ categories:
         brew_type: cli
         description: ArgoCD
         default: false
+      - id: stern
+        brew_type: cli
+        description: Multi-pod log tailing
+        default: false
       - id: common-fate/granted/granted
         brew_type: cli
         description: AWS IAM credentials
@@ -226,6 +246,14 @@ categories:
         brew_type: cli
         description: FinOps tool
         default: false
+      - id: opentofu
+        brew_type: cli
+        description: Open-source Terraform fork
+        default: false
+      - id: checkov
+        type: pipx
+        description: IaC security scanner
+        default: false
       - id: ansible
         type: pipx
         description: Configuration as code
@@ -245,6 +273,10 @@ categories:
       - id: orbstack
         brew_type: cask
         description: Docker alternative
+        default: false
+      - id: hadolint
+        brew_type: cli
+        description: Dockerfile linter
         default: false
 
   - id: terminal
@@ -374,6 +406,14 @@ categories:
         brew_type: cask
         description: Window manager
         default: false
+      - id: rectangle-pro
+        brew_type: cask
+        description: Window manager Pro
+        default: false
+      - id: hiddenbar
+        brew_type: cask
+        description: Menu bar icon hider
+        default: false
       - id: stats
         brew_type: cask
         description: System monitor
@@ -433,6 +473,10 @@ categories:
       - id: claude
         brew_type: cask
         description: AI
+        default: false
+      - id: claude-code
+        brew_type: cask
+        description: Claude Code CLI
         default: false
       - id: chatgpt
         brew_type: cask
