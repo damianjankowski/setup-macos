@@ -62,6 +62,10 @@ categories:
         brew_type: cli
         description: Python app installer
         default: true
+      - id: uv
+        brew_type: cli
+        description: Python package and project manager
+        default: false
       - id: mise
         brew_type: cli
         description: Polyglot runtime manager
