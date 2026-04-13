@@ -18,22 +18,23 @@ show_package_manager_menu() {
     echo "6) Cloud Tools"
     echo "7) Infrastructure as Code"
     echo "8) Container Tools"
+    echo "9) Krew Plugins"
     echo ""
     echo "Terminal & System"
-    echo "9) Terminal Emulators"
-    echo "10) Terminal Utilities"
-    echo "11) System Tools"
+    echo "10) Terminal Emulators"
+    echo "11) Terminal Utilities"
+    echo "12) System Tools"
     echo ""
     echo "Productivity"
-    echo "12) Communication"
-    echo "13) General Tools"
+    echo "13) Communication"
+    echo "14) General Tools"
     echo ""
     echo "Management"
-    echo "14) Show installed"
-    echo "15) Update all cli"
-	echo "16) Update all cask"
-    echo "17) Zap uninstall packages"
-    echo "18) Cleanup"
+    echo "15) Show installed"
+    echo "16) Update all cli"
+	echo "17) Update all cask"
+    echo "18) Zap uninstall packages"
+    echo "19) Cleanup"
     echo ""
     echo "0) Back"
     echo ""
@@ -42,8 +43,8 @@ show_package_manager_menu() {
 handle_package_manager_menu() {
     while true; do
         show_package_manager_menu
-        read -p "Choice [0-18]: " choice
-        
+        read -p "Choice [0-19]: " choice
+
         case $choice in
 		1)  # Install all
 			select_packages_from_catalog "all" "$SCRIPT_DIR/catalog.yaml"
@@ -69,37 +70,40 @@ handle_package_manager_menu() {
 		8)  # Container Tools
 			select_packages_from_catalog "container" "$SCRIPT_DIR/catalog.yaml"
 			;;
-		9)  # Terminal Emulators
+		9)  # Krew Plugins
+			install_krew_plugins
+			;;
+		10) # Terminal Emulators
 			select_packages_from_catalog "terminal" "$SCRIPT_DIR/catalog.yaml"
 			;;
-		10) # Terminal Utilities
+		11) # Terminal Utilities
 			select_packages_from_catalog "terminal-utils" "$SCRIPT_DIR/catalog.yaml"
 			;;
-		11) # System Tools
+		12) # System Tools
 			select_packages_from_catalog "system" "$SCRIPT_DIR/catalog.yaml"
 			;;
-		12) # Communication
+		13) # Communication
 			select_packages_from_catalog "communication" "$SCRIPT_DIR/catalog.yaml"
 			;;
-		13) # General Tools
+		14) # General Tools
 			select_packages_from_catalog "tools" "$SCRIPT_DIR/catalog.yaml"
 			;;
-		14)
+		15)
 			show_installed
 			;;
-		15)
+		16)
 			update_all_cli
 			wait_for_user
 			;;
-		16)
+		17)
 			update_all_cask
 			wait_for_user
 			;;
-		17)
+		18)
 			zap_uninstall_packages
 			wait_for_user
 			;;
-		18)
+		19)
 			cleanup_homebrew
 			wait_for_user
 			;;
@@ -128,7 +132,11 @@ install_packages() {
     for package in $packages; do
         current_package=$((current_package + 1))
         
-        if [[ "$package" == pipx:* ]]; then
+        if [[ "$package" == krew:* ]]; then
+            local real_package="${package#krew:}"
+            log_info "[$current_package/$total_packages] Installing $real_package (krew)..."
+            install_krew_plugin "$real_package"
+        elif [[ "$package" == pipx:* ]]; then
             local real_package="${package#pipx:}"
             log_info "[$current_package/$total_packages] Installing $real_package (pipx)..."
             install_pipx_package "$real_package"

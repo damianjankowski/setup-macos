@@ -507,6 +507,50 @@ categories:
         description: AI model runner
         default: false
 
+  - id: krew-plugins
+    name: Krew Plugins
+    packages:
+      - id: blame
+        type: krew
+        description: Show who last modified each line
+        default: true
+      - id: ctx
+        type: krew
+        description: Switch between kubectl contexts
+        default: true
+      - id: ns
+        type: krew
+        description: Switch between kubectl namespaces
+        default: true
+      - id: tail
+        type: krew
+        description: Stream logs from multiple pods
+        default: true
+      - id: stern
+        type: krew
+        description: Multi-pod and container log tailing
+        default: true
+      - id: klock
+        type: krew
+        description: Watch resources with a live view
+        default: true
+      - id: tree
+        type: krew
+        description: Show object hierarchy as a tree
+        default: true
+      - id: view-allocations
+        type: krew
+        description: Show resource allocations per node
+        default: true
+      - id: view-utilization
+        type: krew
+        description: Show cluster resource utilization
+        default: true
+      - id: oomd
+        type: krew
+        description: Show OOMKilled pods and containers
+        default: true
+
   - id: tools
     name: General Tools
     packages:

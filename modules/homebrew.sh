@@ -177,14 +177,15 @@ install_rosetta() {
 show_homebrew_menu() {
     clear
     echo "┌─────────────────────────────┐"
-    echo "│         Homebrew            │"
+    echo "│    Homebrew / Pipx / Krew   │"
     echo "└─────────────────────────────┘"
     echo ""
     echo "1) Install Rosetta"
     echo "2) Install Homebrew"
-    echo "3) Update Homebrew"
-    echo "4) Package manager"
-    echo "5) Check status"
+    echo "3) Install Krew (kubectl plugin manager)"
+    echo "4) Update Homebrew"
+    echo "5) Package manager"
+    echo "6) Check status"
     echo "0) Back"
     echo ""
 }
@@ -192,8 +193,8 @@ show_homebrew_menu() {
 handle_homebrew_menu() {
     while true; do
         show_homebrew_menu
-        read -p "Choice [0-5]: " choice
-        
+        read -p "Choice [0-6]: " choice
+
         case $choice in
             1)
                 install_rosetta
@@ -205,13 +206,17 @@ handle_homebrew_menu() {
                 wait_for_user
                 ;;
             3)
-                update_homebrew
+                install_krew
                 wait_for_user
                 ;;
             4)
-                package_manager
+                update_homebrew
+                wait_for_user
                 ;;
             5)
+                package_manager
+                ;;
+            6)
                 get_homebrew_status
                 wait_for_user
                 ;;

@@ -20,6 +20,7 @@ source "$SCRIPT_DIR/modules/backup.sh"
 source "$SCRIPT_DIR/modules/aws.sh"
 source "$SCRIPT_DIR/modules/system_info.sh"
 source "$SCRIPT_DIR/modules/finder.sh"
+source "$SCRIPT_DIR/modules/kubernetes.sh"
 
 get_system_info() {
     local os_version=$(sw_vers -productVersion 2>/dev/null || echo "Unknown")
@@ -36,7 +37,7 @@ show_main_menu() {
     echo "System: $(get_system_info)"
     echo ""
     echo "1) 🚀 Essentials"
-    echo "2) 🍺 Homebrew/Pipx"
+    echo "2) 🍺 Homebrew/Pipx/Krew"
     echo "3) 🛠️ System"
     echo "4) 🔧 Git"
     echo "5) 🔖 Chezmoi"

@@ -19,7 +19,7 @@ _build_checklist_tsv() {
         )
       end
       | map({
-          id: (if (.type == "pipx") then "pipx:" + (.id // .name // .slug) else (.id // .name // .slug) end),
+          id: (if (.type == "krew") then "krew:" + (.id // .name // .slug) elif (.type == "pipx") then "pipx:" + (.id // .name // .slug) else (.id // .name // .slug) end),
           label: ((.brew_type // .type // "cli") + " — " + (.description // "")),
           status: (if (.default // .enabled // false) then "on" else "off" end)
         })
