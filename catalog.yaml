@@ -41,7 +41,7 @@ categories:
       - id: cursor
         brew_type: cask
         description: AI code editor
-        default: true
+        default: false
       - id: neovim
         brew_type: cli
         description: Modern Vim editor
@@ -53,7 +53,7 @@ categories:
       - id: pyenv
         brew_type: cli
         description: Python version manager
-        default: true
+        default: false
       - id: pyenv-virtualenv
         brew_type: cli
         description: Python virtual environment manager
@@ -73,7 +73,7 @@ categories:
       - id: direnv
         brew_type: cli
         description: Per-directory environment variables
-        default: false
+        default: true
       - id: goenv
         brew_type: cli
         description: Go version manager
@@ -97,7 +97,7 @@ categories:
       - id: lazygit
         brew_type: cli
         description: Git terminal UI
-        default: false
+        default: true
       - id: glab
         brew_type: cli
         description: GitLab CLI
@@ -169,11 +169,11 @@ categories:
       - id: awscli
         brew_type: cli
         description: AWS CLI
-        default: true
+        default: false
       - id: google-cloud-sdk
         brew_type: cask
         description: Google Cloud SDK
-        default: true
+        default: false
       - id: gcloud-cli
         brew_type: cli
         description: Google Cloud CLI
@@ -193,7 +193,7 @@ categories:
       - id: kubectx
         brew_type: cli
         description: manage kubectl context
-        default: false
+        default: true
       - id: helm
         brew_type: cli
         description: Kubernetes package manager
@@ -217,7 +217,7 @@ categories:
       - id: common-fate/granted/granted
         brew_type: cli
         description: AWS IAM credentials
-        default: true
+        default: false
       - id: lens
         brew_type: cask
         description: Kubernetes IDE
@@ -237,7 +237,7 @@ categories:
       - id: tfenv
         brew_type: cli
         description: Terraform version manager
-        default: true
+        default: false
       - id: terraform
         brew_type: cli
         description: Infrastructure as code
@@ -245,7 +245,7 @@ categories:
       - id: tflint
         brew_type: cli
         description: Terraform linter
-        default: true
+        default: false
       - id: infracost
         brew_type: cli
         description: FinOps tool
@@ -481,11 +481,11 @@ categories:
       - id: claude
         brew_type: cask
         description: AI
-        default: false
+        default: true
       - id: claude-code
         brew_type: cask
         description: Claude Code CLI
-        default: false
+        default: true
       - id: chatgpt
         brew_type: cask
         description: AI
