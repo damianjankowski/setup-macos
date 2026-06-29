@@ -234,10 +234,6 @@ categories:
   - id: iac
     name: Infrastructure as Code
     packages:
-      - id: terraformer
-        brew_type: cli
-        description: Terraform state to code
-        default: false
       - id: tfenv
         brew_type: cli
         description: Terraform version manager
@@ -246,8 +242,8 @@ categories:
         brew_type: cli
         description: Infrastructure as code
         default: false
-      - id: tflint
-        brew_type: cli
+      - id: terraform-linters/tap/tflint
+        brew_type: cask
         description: Terraform linter
         default: false
       - id: infracost
@@ -446,6 +442,10 @@ categories:
         brew_type: cask
         description: Window manager
         default: true
+      - id: asmvik/formulae/yabai
+        brew_type: cli
+        description: Tiling window manager
+        default: false
       - id: font-meslo-lg-nerd-font
         brew_type: cask
         description: Meslo LG Nerd font
